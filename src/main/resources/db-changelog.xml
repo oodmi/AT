@@ -1,0 +1,87 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Dmitry" id="1">
+
+        <sql splitStatements="true">
+            DROP TABLE IF EXISTS "USER" CASCADE;
+        </sql>
+
+        <createTable tableName="USER">
+            <column name="login" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Dmitry" id="2">
+
+        <sql splitStatements="true">
+            DROP TABLE IF EXISTS "BOOK" CASCADE;
+        </sql>
+
+        <createTable tableName="BOOK">
+            <column name="ISN" type="INT(11)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="author" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="Dmitry">
+        <addForeignKeyConstraint baseTableName="BOOK" baseColumnNames="owner" constraintName="owner"
+                                 referencedTableName="USER"
+                                 referencedColumnNames="login"/>
+    </changeSet>
+
+    <changeSet id="4" author="Dmitry">
+        <insert tableName="USER">
+            <column name="Login">Dmitry</column>
+            <column name="password">Lolka</column>
+        </insert>
+        <insert tableName="USER">
+            <column name="Login">Vasy</column>
+            <column name="password">Lolka</column>
+        </insert>
+        <insert tableName="USER">
+            <column name="Login">Anny</column>
+            <column name="password">Lolka</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="5" author="Dmitry">
+        <insert tableName="BOOK">
+            <column name="ISN">1</column>
+            <column name="author">Pushkin A.</column>
+            <column name="name">Interesting book</column>
+            <column name="owner">Dmitry</column>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ISN">2</column>
+            <column name="author">Fet A.</column>
+            <column name="name">Interesting book</column>
+            <column name="owner">Vasy</column>
+        </insert>
+        <insert tableName="BOOK">
+            <column name="ISN">3</column>
+            <column name="author">Kel M.</column>
+            <column name="name">Interesting book</column>
+            <column name="owner"></column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

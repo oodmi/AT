@@ -1,13 +1,19 @@
 package dao.impl;
 
 import dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import persistence.User;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao{
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     public boolean insertUser(User user) {
         return false;
@@ -25,7 +31,7 @@ public class UserDaoImpl implements UserDao{
         return false;
     }
 
-    public List<User> getUsers() {
+    public List<User> getUsers(){
         return null;
     }
 }

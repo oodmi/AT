@@ -2,14 +2,18 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="0" author="Dmitry">
+        <sql splitStatements="true">
+            DROP TABLE IF EXISTS BOOK CASCADE;
+        </sql>
+        <sql splitStatements="true">
+            DROP TABLE IF EXISTS USER CASCADE;
+        </sql>
+    </changeSet>
 
     <changeSet author="Dmitry" id="1">
-
-        <sql splitStatements="true">
-            DROP TABLE IF EXISTS "USER" CASCADE;
-        </sql>
-
         <createTable tableName="USER">
             <column name="login" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -21,11 +25,6 @@
     </changeSet>
 
     <changeSet author="Dmitry" id="2">
-
-        <sql splitStatements="true">
-            DROP TABLE IF EXISTS "BOOK" CASCADE;
-        </sql>
-
         <createTable tableName="BOOK">
             <column name="ISN" type="INT(11)">
                 <constraints primaryKey="true" nullable="false"/>

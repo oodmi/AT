@@ -26,7 +26,7 @@
 
     <changeSet author="Dmitry" id="2">
         <createTable tableName="BOOK">
-            <column name="ISN" type="INT(11)">
+            <column name="isn" type="INT(11)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="author" type="VARCHAR(255)">
@@ -64,19 +64,19 @@
 
     <changeSet id="5" author="Dmitry">
         <insert tableName="BOOK">
-            <column name="ISN">1</column>
+            <column name="isn">1</column>
             <column name="author">Pushkin A.</column>
             <column name="name">Interesting book</column>
             <column name="owner">Dmitry</column>
         </insert>
         <insert tableName="BOOK">
-            <column name="ISN">2</column>
+            <column name="isn">2</column>
             <column name="author">Fet A.</column>
             <column name="name">Interesting book</column>
             <column name="owner">Vasy</column>
         </insert>
         <insert tableName="BOOK">
-            <column name="ISN">3</column>
+            <column name="isn">3</column>
             <column name="author">Kel M.</column>
             <column name="name">Interesting book</column>
             <column name="owner"></column>

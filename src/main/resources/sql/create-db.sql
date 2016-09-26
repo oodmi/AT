@@ -7,7 +7,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE book (
-  ISN    INT(11) PRIMARY KEY  NOT NULL,
+  isn    INT(11) PRIMARY KEY  NOT NULL,
   author VARCHAR(30)          ,
   name   VARCHAR(30)          NOT NULL,
   owner  VARCHAR(30)

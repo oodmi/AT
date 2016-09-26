@@ -1,29 +1,28 @@
 package persistence;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Book {
 
-    private Integer ISN;
+    private Integer isn;
     private String author;
     private String name;
+    private String owner;
 
     public Book() {
     }
 
-    public Book(Integer ISN, String author, String name) {
-        this.ISN = ISN;
+    public Book(Integer isn, String author, String name, String owner) {
+        this.isn = isn;
         this.author = author;
         this.name = name;
+        this.owner = owner;
     }
 
-    public Integer getISN() {
-        return ISN;
+    public Integer getIsn() {
+        return isn;
     }
 
-    public void setISN(Integer ISN) {
-        this.ISN = ISN;
+    public void setIsn(Integer isn) {
+        this.isn = isn;
     }
 
     public String getAuthor() {
@@ -40,5 +39,13 @@ public class Book {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

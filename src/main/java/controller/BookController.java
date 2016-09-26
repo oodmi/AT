@@ -34,10 +34,10 @@ public class BookController {
         bookService.deleteBook(id);
     }
 
-    @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<Book> getBooks() {
-        return bookService.getBooks();
+        List<Book> books = bookService.getBooks();
+        return books;
     }
 
 }

@@ -1,14 +1,9 @@
 package persistence;
 
-import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-
-@Component
 public class User {
+
     private String login;
     private String password;
-    private Collection<Book> books;
 
     public User() {
     }
@@ -34,11 +29,4 @@ public class User {
         this.password = password;
     }
 
-    public Collection<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Collection<Book> books) {
-        this.books = books;
-    }
 }

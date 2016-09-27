@@ -10,7 +10,7 @@ public interface UserService {
 
     User getUserByLogin(String login);
 
-    void updateUser(User user);
+    void updateUser(String login, User user);
 
     boolean deleteUser(String login);
 

@@ -29,9 +29,9 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.queryForObject(sql, new Object[]{login}, new UserMapper());
     }
 
-    public boolean updateUser(User user) {
-        String sql = "update user set password = ? where login = ?";
-        int update = jdbcTemplate.update(sql, user.getPassword(), user.getLogin());
+    public boolean updateUser(String login, User user) {
+        String sql = "update user set password = ? login = ? where login = ?";
+        int update = jdbcTemplate.update(sql, user.getPassword(), user.getLogin(), login);
         return update != 0;
     }
 

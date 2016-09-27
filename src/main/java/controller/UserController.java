@@ -27,7 +27,7 @@ public class UserController {
 
     @RequestMapping(value = "/{login}", method = RequestMethod.PUT)
     public void updateUser(@PathVariable("login") String login, @RequestBody User user) {
-        userService.updateUser(user);
+        userService.updateUser(login, user);
     }
 
     @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)

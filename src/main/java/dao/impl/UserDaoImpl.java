@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     public List<User> getUsers() {
-        String sql = "select * from user";
+        String sql = "select * from user order by login";
         return jdbcTemplate.query(sql, new UserMapper());
     }
 

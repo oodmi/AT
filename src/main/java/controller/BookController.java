@@ -20,8 +20,8 @@ public class BookController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public void insertBook(@RequestBody Book book) {
-        bookService.insertBook(book);
+    public boolean insertBook(@RequestBody Book book) {
+        return bookService.insertBook(book);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

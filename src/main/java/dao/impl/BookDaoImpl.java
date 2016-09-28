@@ -20,7 +20,14 @@ public class BookDaoImpl implements BookDao {
 
     public boolean insertBook(Book book) {
         String sql = "INSERT INTO book(isn,author,name) VALUES(?,?,?)";
-        int update = jdbcTemplate.update(sql, book.getIsn(), book.getAuthor(), book.getName());
+        int update;
+        try{
+            update = jdbcTemplate.update(sql, book.getIsn(), book.getAuthor(), book.getName());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
         return update != 0;
     }
 
@@ -42,7 +49,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     public List<Book> getBooks() {
-        String sql = "SELECT * FROM book";
+        String sql = "SELECT * FROM book ORDER BY author";
         return jdbcTemplate.query(sql, new BookMapper());
     }
 

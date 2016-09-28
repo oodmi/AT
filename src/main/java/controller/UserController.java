@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public void insertUser(@RequestBody User user) {
-        userService.insertUser(user);
+    public boolean insertUser(@RequestBody User user) {
+        return userService.insertUser(user);
     }
 
     @RequestMapping(value = "/{login}", method = RequestMethod.PUT)

@@ -57,10 +57,9 @@
             tr.appendChild(td4);
             tr.appendChild(td5);
 
-
             td1.innerHTML = book.isn;
-            td2.innerHTML = book.name;
-            td3.innerHTML = book.author;
+            td2.innerHTML = book.author;
+            td3.innerHTML = book.name;
             td4.innerHTML = book.owner;
 
             var button = document.createElement('button');
@@ -72,7 +71,7 @@
             td5.appendChild(button);
         }
 
-        $(document).ready(function () {
+        function getBooks() {
             $.ajax("/book/", {
                 method: "GET",
                 dataType: "json",
@@ -82,9 +81,17 @@
                     addRowToTable(book)
                 });
             });
+        }
 
+        $(document).ready(function () {
+            getBooks();
 //            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
+        });
 
+        $(function () {
+            $("#show-more-books").button().on("click", function () {
+                getBooks();
+            })
         });
 
         $(function () {
@@ -93,7 +100,7 @@
                     isn = $("#isn"),
                     name = $("#name"),
                     author = $("#author"),
-                    allFields = $( [] ).add( isn ).add( name ).add( author );
+                    allFields = $([]).add(isn).add(name).add(author);
 
             function addBook() {
                 var book = {};
@@ -109,50 +116,46 @@
                     data: JSON.stringify(book)
                 }).done(function (valid) {
                     if (valid) {
-                        dialog.dialog( "close" );
-                       addRowToTable(book)
+                        dialog.dialog("close");
+                        addRowToTable(book)
                     }
-                    else{
-                        dialog.dialog( "close" );
-                        alert("Book with ISN = " + book.isn + " exist yet")
+                    else {
+                        dialog.dialog("close");
+                        alert("Error! Book with ISN = " + book.isn + " already exist")
                     }
                 })
             }
 
-
             dialog = $("#dialog-form").dialog({
                 autoOpen: false,
-                height: 400,
-                width: 350,
+                height: 280,
+                width: 400,
                 modal: true,
-                buttons: {
-                    "Create a book": addBook,
-                    Cancel: function () {
-                        dialog.dialog("close");
-                    }
-                },
                 close: function () {
                     form[0].reset();
+                },
+                open: function () {
+                    $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
                 }
             });
-
             form = dialog.find("form").on("submit", function (event) {
                 event.preventDefault();
                 addBook();
             });
-
             $("#add-new-book").button().on("click", function () {
                 dialog.dialog("open");
             });
+            $("#close-button").button().on("click", function () {
+                dialog.dialog("close");
+            })
         })
-
     </script>
 </head>
 <body style="background: #f8f8f8">
 <div class="container">
     <div class="col-md-2"></div>
     <div class="col-md-8" style="font-size: 15px">
-        <div class="panel panel-default" style=" margin-top: 60pt">
+        <div class="panel panel-default" style=" margin-top: 20pt">
             <div class="panel-body">
                 <div style=" text-align: center ;">
                     <a href="${pageContext.request.contextPath}/view/user/"
@@ -169,35 +172,41 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="isn">ISN:</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" value="1" class="form-control" id="isn" placeholder="Enter isn" required="true">
+                        <input type="number" min="1" class="form-control" id="isn" placeholder="Enter isn"
+                               required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="name">Name:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" placeholder="Enter name" required>
+                        <input type="text" minlength="3" maxlength="30" class="form-control" id="name"
+                               placeholder="Enter name" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="author">Author:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="author" placeholder="Enter author" required>
+                        <input type="text" minlength="3" maxlength="30" class="form-control" id="author"
+                               placeholder="Enter author" required>
                     </div>
                 </div>
-                <%--<div class="form-group">--%>
-                    <%--<div class="col-sm-offset-2 col-sm-10">--%>
-                        <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+                <div class="form-group">
+                    <div class="btn-group btn-group-justified">
+                        <button id="close-button" type="button" class="btn btn-default"
+                                style="margin-left: 10%; width: 40%">Close
+                        </button>
+                        <button type="submit" class="btn btn-default" style="width: 40%">Save</button>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class="panel panel-default" style=" margin-top: 10pt">
+        <div class="panel panel-default" style=" margin-top: 20pt">
             <table class="table table-condensed tablesorter" id="table_with_books">
                 <thead>
                 <tr>
                     <th data-type="number">ISN</th>
-                    <th data-type="string" class="thsort">Name</th>
                     <th data-type="string" class="thsort">Author</th>
+                    <th data-type="string" class="thsort">Name</th>
                     <th data-type="string">Owner</th>
                     <th>Action</th>
                 </tr>
@@ -205,7 +214,7 @@
                 <tbody id="tbody_with_books"></tbody>
             </table>
         </div>
-        <div class="btn-group btn-group-justified">
+        <div class="btn-group btn-group-justified" style="margin-bottom: 20pt ; margin-top: 20pt">
             <button id="add-new-book" type="button" class="btn btn-default"
                     style="width: 50%">Add new book
             </button>

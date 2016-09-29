@@ -14,6 +14,9 @@ public class BookServiceImpl implements BookService {
     @Autowired
     BookDao bookDao;
 
+    @Autowired
+    Long limit;
+
     public boolean insertBook(Book book) {
         return bookDao.insertBook(book);
     }
@@ -22,8 +25,8 @@ public class BookServiceImpl implements BookService {
         return bookDao.getBookById(id);
     }
 
-    public void updateBook(Book book) {
-        bookDao.updateBook(book);
+    public boolean updateBook(Long id, Book book) {
+        return bookDao.updateBook(id, book);
     }
 
     public boolean deleteBook(Long id) {
@@ -31,6 +34,22 @@ public class BookServiceImpl implements BookService {
     }
 
     public List<Book> getBooks() {
-        return bookDao.getBooks();
+        List<Book> books = bookDao.getBooks(limit + 5);
+        limit += books.size();
+        return books;
+    }
+
+    public List<Book> getFirstFiveBooks() {
+        limit = 0l;
+        return bookDao.getBooks(limit);
+    }
+
+    public void takeBook(String login, Long id) {
+        bookDao.takeBook(login, id);
+    }
+
+
+    public void returnBook(Long id) {
+        bookDao.returnBook(id);
     }
 }

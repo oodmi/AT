@@ -20,7 +20,13 @@ public class UserDaoImpl implements UserDao {
 
     public boolean insertUser(User user) {
         String sql = "insert into user(login,password) values(?,?)";
-        int update = jdbcTemplate.update(sql, user.getLogin(), user.getPassword());
+        int update;
+        try {
+            update = jdbcTemplate.update(sql, user.getLogin(), user.getPassword());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return update != 0;
     }
 
@@ -31,13 +37,25 @@ public class UserDaoImpl implements UserDao {
 
     public boolean updateUser(String login, User user) {
         String sql = "update user set password = ? login = ? where login = ?";
-        int update = jdbcTemplate.update(sql, user.getPassword(), user.getLogin(), login);
+        int update;
+        try {
+            update = jdbcTemplate.update(sql, user.getPassword(), user.getLogin(), login);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return update != 0;
     }
 
     public boolean deleteUser(String login) {
         String sql = "delete from user where login = ?";
-        int update = jdbcTemplate.update(sql, login);
+        int update;
+        try {
+            update = jdbcTemplate.update(sql, login);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return update != 0;
     }
 

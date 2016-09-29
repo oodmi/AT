@@ -23,9 +23,21 @@
         .thsort:hover {
             color: blue;
         }
+
+        a:hover {
+            text-decoration: none;
+            cursor: pointer;
+            color: blue;
+        }
     </style>
 
     <script type="text/javascript">
+
+        var dialog;
+        var oldIsn;
+        var limit = 0;
+        var currentUser = [];
+        currentUser.login = "Dmitry";
 
         function deleteBook(isn) {
             if (!confirm("Do you really want to delete this book?")) return;
@@ -35,6 +47,89 @@
                 contentType: 'application/json; charset=utf-8'
             }).done(function () {
                 $("#tr" + isn).remove();
+            });
+        }
+
+        function addBook(book) {
+            $.ajax("/book/", {
+                method: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(book)
+            }).done(function (valid) {
+                if (valid) {
+                    dialog.dialog("close");
+                    addRowToTable(book)
+                }
+                else {
+                    dialog.dialog("close");
+                    alert("Error! Book with ISN = " + book.isn + " already exist")
+                }
+            })
+        }
+
+        function updateBook(oldIsn, book) {
+            $.ajax("/book/" + oldIsn, {
+                method: "PUT",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(book)
+            }).done(function (valid) {
+                if (valid) {
+                    dialog.dialog("close");
+                    updateRowInTable(oldIsn, book)
+                }
+                else {
+                    dialog.dialog("close");
+                    alert("Error! Book with ISN = " + book.isn + " already exist")
+                }
+            })
+        }
+
+        function getBooks(path) {
+            $.ajax(path, {
+                method: "GET",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8'
+            }).done(function (data) {
+                $(data).each(function (i, book) {
+                    addRowToTable(book)
+                });
+                limit += 5;
+            });
+        }
+
+        function takeBook(isn) {
+            console.log(JSON.stringify(currentUser.login));
+            $.ajax("/book/take/" + isn, {
+                method: "PUT",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: currentUser.login
+            }).done(function () {
+                var buttonReturn = document.createElement('button');
+                buttonReturn.classList.add("btn", "btn-default");
+                buttonReturn.innerHTML = "return";
+                buttonReturn.onclick = function () {
+                    returnBook(isn)
+                };
+                $("#tr" + isn).find("td:nth-child(4)").html(buttonReturn);
+            });
+        }
+
+        function returnBook(isn) {
+            $.ajax("/book/return/" + isn, {
+                method: "PUT",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8'
+            }).done(function () {
+                var buttonTake = document.createElement('button');
+                buttonTake.classList.add("btn", "btn-default");
+                buttonTake.innerHTML = "take";
+                buttonTake.onclick = function () {
+                    takeBook(isn)
+                };
+                $("#tr" + isn).find("td:nth-child(4)").html(buttonTake);
             });
         }
 
@@ -57,10 +152,38 @@
             tr.appendChild(td4);
             tr.appendChild(td5);
 
-            td1.innerHTML = book.isn;
+            td1.innerHTML = "<a id='a" + book.isn + "'>" + book.isn + "</a>";
+            $("#a" + book.isn).on("click", function (event) {
+                event.preventDefault();
+                dialog.dialog("open");
+                $("#isn").val(book.isn);
+                $("#name").val(book.name);
+                $("#author").val(book.author);
+                $("#ui-id-1").text('Update book');
+                oldIsn = book.isn;
+            });
             td2.innerHTML = book.author;
             td3.innerHTML = book.name;
-            td4.innerHTML = book.owner;
+
+            if (book.owner == null) {
+                var buttonTake = document.createElement('button');
+                buttonTake.classList.add("btn", "btn-default");
+                buttonTake.innerHTML = "take";
+                buttonTake.onclick = function () {
+                    takeBook(book.isn)
+                };
+                td4.appendChild(buttonTake);
+            } else if (currentUser.login == book.owner) {
+                var buttonReturn = document.createElement('button');
+                buttonReturn.classList.add("btn", "btn-default");
+                buttonReturn.innerHTML = "return";
+                buttonReturn.onclick = function () {
+                    returnBook(book.isn)
+                };
+                td4.appendChild(buttonReturn);
+            } else {
+                td4.innerHTML = book.owner;
+            }
 
             var button = document.createElement('button');
             button.classList.add("btn", "btn-default");
@@ -71,84 +194,61 @@
             td5.appendChild(button);
         }
 
-        function getBooks() {
-            $.ajax("/book/", {
-                method: "GET",
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8'
-            }).done(function (data) {
-                $(data).each(function (i, book) {
-                    addRowToTable(book)
-                });
-            });
+        function updateRowInTable(isn, book) {
+            $("#tr" + isn).remove();
+            addRowToTable(book);
         }
 
         $(document).ready(function () {
-            getBooks();
-//            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
-        });
-
-        $(function () {
-            $("#show-more-books").button().on("click", function () {
-                getBooks();
-            })
-        });
-
-        $(function () {
-            var form,
-                    dialog,
-                    isn = $("#isn"),
-                    name = $("#name"),
-                    author = $("#author"),
-                    allFields = $([]).add(isn).add(name).add(author);
-
-            function addBook() {
-                var book = {};
-                console.log(isn.val());
-                book.isn = isn.val();
-                book.name = name.val();
-                book.author = author.val();
-                book.owner = null;
-                $.ajax("/book/", {
-                    method: "POST",
-                    dataType: "json",
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(book)
-                }).done(function (valid) {
-                    if (valid) {
-                        dialog.dialog("close");
-                        addRowToTable(book)
-                    }
-                    else {
-                        dialog.dialog("close");
-                        alert("Error! Book with ISN = " + book.isn + " already exist")
-                    }
-                })
-            }
-
             dialog = $("#dialog-form").dialog({
                 autoOpen: false,
                 height: 280,
                 width: 400,
                 modal: true,
                 close: function () {
-                    form[0].reset();
+                    dialog.find("form")[0].reset();
                 },
                 open: function () {
                     $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
                 }
             });
-            form = dialog.find("form").on("submit", function (event) {
-                event.preventDefault();
-                addBook();
+            var isn = $("#isn"),
+                    name = $("#name"),
+                    author = $("#author");
+
+            getBooks("/book/first/five/");
+
+            $("#show-more-books").button().on("click", function () {
+                getBooks("/book/");
             });
+
+//            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
+
             $("#add-new-book").button().on("click", function () {
                 dialog.dialog("open");
+                $("#ui-id-1").text('Create new book')
             });
+
             $("#close-button").button().on("click", function () {
                 dialog.dialog("close");
-            })
+            });
+
+            dialog.find("form").on("submit", function (event) {
+                event.preventDefault();
+                var book = {};
+                book.isn = isn.val();
+                book.name = name.val();
+                book.author = author.val();
+                book.owner = null;
+                if ($("#ui-id-1").text() == 'Update book') {
+                    updateBook(oldIsn, book);
+                }
+                else {
+                    addBook(book);
+                }
+            });
         })
+
     </script>
 </head>
 <body style="background: #f8f8f8">

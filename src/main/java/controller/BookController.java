@@ -25,8 +25,8 @@ public class BookController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public void updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
-        bookService.updateBook(book);
+    public boolean updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
+        return bookService.updateBook(id, book);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -36,8 +36,22 @@ public class BookController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<Book> getBooks() {
-        List<Book> books = bookService.getBooks();
-        return books;
+        return bookService.getBooks();
+    }
+
+    @RequestMapping(value = "/first/five/", method = RequestMethod.GET)
+    public List<Book> getFirstFiveBooks() {
+        return bookService.getFirstFiveBooks();
+    }
+
+    @RequestMapping(value = "/take/{id}", method = RequestMethod.PUT)
+    public void takeBook(@PathVariable("id") Long id, @RequestBody String login) {
+        bookService.takeBook(login, id);
+    }
+
+    @RequestMapping(value = "/return/{id}", method = RequestMethod.PUT)
+    public void returnBook(@PathVariable("id") Long id) {
+        bookService.returnBook(id);
     }
 
 }

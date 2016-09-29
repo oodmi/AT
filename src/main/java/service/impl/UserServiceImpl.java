@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserByLogin(login);
     }
 
-    public void updateUser(String login, User user) {
-        userDao.updateUser(login, user);
+    public boolean updateUser(String login, User user) {
+        return userDao.updateUser(login, user);
     }
 
     public boolean deleteUser(String login) {

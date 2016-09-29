@@ -21,10 +21,9 @@ public class BookDaoImpl implements BookDao {
     public boolean insertBook(Book book) {
         String sql = "INSERT INTO book(isn,author,name) VALUES(?,?,?)";
         int update;
-        try{
+        try {
             update = jdbcTemplate.update(sql, book.getIsn(), book.getAuthor(), book.getName());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -36,9 +35,15 @@ public class BookDaoImpl implements BookDao {
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new BookMapper());
     }
 
-    public boolean updateBook(Book book) {
-        String sql = "UPDATE book SET name = ? , author = ? WHERE isn = ?";
-        int update = jdbcTemplate.update(sql, book.getName(), book.getAuthor(), book.getIsn());
+    public boolean updateBook(Long id, Book book) {
+        String sql = "UPDATE book SET isn = ? , name = ? , author = ? WHERE isn = ?";
+        int update;
+        try {
+            update = jdbcTemplate.update(sql, book.getIsn(), book.getName(), book.getAuthor(), id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return update != 0;
     }
 
@@ -48,9 +53,20 @@ public class BookDaoImpl implements BookDao {
         return update != 0;
     }
 
-    public List<Book> getBooks() {
-        String sql = "SELECT * FROM book ORDER BY author";
-        return jdbcTemplate.query(sql, new BookMapper());
+    public List<Book> getBooks(Long limit) {
+        String sql = "SELECT * FROM book ORDER BY author LIMIT ? , 5";
+        List<Book> query = jdbcTemplate.query(sql, new BookMapper(), limit);
+        return query;
+    }
+
+    public void takeBook(String login, Long id) {
+        String sql = "UPDATE book SET owner = ? WHERE isn = ?";
+        int update = jdbcTemplate.update(sql, login, id);
+    }
+
+    public void returnBook(Long id) {
+        String sql = "UPDATE book SET owner = NULL WHERE isn = ?";
+        int update = jdbcTemplate.update(sql, id);
     }
 
     private static final class BookMapper implements RowMapper<Book> {

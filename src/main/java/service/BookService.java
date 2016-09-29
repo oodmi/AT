@@ -10,9 +10,16 @@ public interface BookService {
 
     Book getBookById(Long id);
 
-    void updateBook(Book book);
+    boolean updateBook(Long id, Book book);
 
     boolean deleteBook(Long id);
 
     List<Book> getBooks();
+
+    List<Book> getFirstFiveBooks();
+
+    void takeBook(String login, Long id);
+
+    void returnBook( Long id);
+
 }

@@ -9,9 +9,13 @@ public interface BookDao {
 
     Book getBookById(Long id);
 
-    boolean updateBook(Book book);
+    boolean updateBook(Long id, Book book);
 
     boolean deleteBook(Long id);
 
-    List<Book> getBooks();
+    List<Book> getBooks(Long limit);
+
+    void takeBook(String login, Long id);
+
+    void returnBook(Long id);
 }

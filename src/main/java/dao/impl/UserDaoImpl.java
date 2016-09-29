@@ -36,10 +36,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     public boolean updateUser(String login, User user) {
-        String sql = "update user set password = ? login = ? where login = ?";
-        int update;
+        String sql1 = "Select login from user where login = ?";
+        String sql3 = "update user set password = ?, login = ? where login = ?";
+        String sql2 = "update book set owner = ? where owner = ?";
+        int update = 0;
         try {
-            update = jdbcTemplate.update(sql, user.getPassword(), user.getLogin(), login);
+            if (jdbcTemplate.query(sql1, new Object[]{login}, new UserLoginMapper()).size() != 0) {
+                jdbcTemplate.update(sql2, user.getLogin(), login);
+                update = jdbcTemplate.update(sql3, user.getPassword(), user.getLogin(), login);
+            } else return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -59,9 +64,9 @@ public class UserDaoImpl implements UserDao {
         return update != 0;
     }
 
-    public List<User> getUsers() {
-        String sql = "select * from user order by login";
-        return jdbcTemplate.query(sql, new UserMapper());
+    public List<String> getUsers() {
+        String sql = "select login from user order by login";
+        return jdbcTemplate.query(sql, new UserLoginMapper());
     }
 
     private static final class UserMapper implements RowMapper<User> {
@@ -72,6 +77,14 @@ public class UserDaoImpl implements UserDao {
             user.setLogin(rs.getString("login"));
             user.setPassword(rs.getString("password"));
             return user;
+        }
+    }
+
+    private static final class UserLoginMapper implements RowMapper<String> {
+
+        @Override
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return rs.getString("login");
         }
     }
 }

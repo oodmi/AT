@@ -100,10 +100,8 @@
         }
 
         function takeBook(isn) {
-            console.log(JSON.stringify(currentUser.login));
             $.ajax("/book/take/" + isn, {
                 method: "PUT",
-                dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 data: currentUser.login
             }).done(function () {
@@ -120,7 +118,6 @@
         function returnBook(isn) {
             $.ajax("/book/return/" + isn, {
                 method: "PUT",
-                dataType: "json",
                 contentType: 'application/json; charset=utf-8'
             }).done(function () {
                 var buttonTake = document.createElement('button');

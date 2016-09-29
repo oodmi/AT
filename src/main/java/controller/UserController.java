@@ -2,7 +2,6 @@ package controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import persistence.Book;
 import persistence.User;
 import service.UserService;
 
@@ -31,13 +30,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
-    public void deleteUser(@PathVariable("login") String login) {
-        userService.deleteUser(login);
+    public boolean deleteUser(@PathVariable("login") String login) {
+        return userService.deleteUser(login);
     }
 
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return userService.getUsers();
     }
 }

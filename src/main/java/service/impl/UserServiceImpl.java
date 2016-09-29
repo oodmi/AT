@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         return userDao.deleteUser(login);
     }
 
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return userDao.getUsers();
     }
 }

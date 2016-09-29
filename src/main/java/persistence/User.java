@@ -2,6 +2,7 @@ package persistence;
 
 public class User {
 
+    private String id;
     private String login;
     private String password;
 

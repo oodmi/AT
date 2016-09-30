@@ -38,12 +38,9 @@
     </bean>
 
     <!--<jdbc:embedded-database id="dataSource" type="H2">-->
-        <!--&lt;!&ndash;<jdbc:script location="classpath:db/sql/create-db.sql"/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<jdbc:script location="classpath:db/sql/insert-data.sql"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<jdbc:script location="classpath:db/sql/create-db.sql"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<jdbc:script location="classpath:db/sql/insert-data.sql"/>&ndash;&gt;-->
     <!--</jdbc:embedded-database>-->
 
-    <bean id="limit" class="java.lang.Long">
-        <constructor-arg type="java.lang.String" value="0"/>
-    </bean>
 
 </beans>

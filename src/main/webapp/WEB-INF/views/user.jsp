@@ -1,15 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script type="text/javascript" src="../../static/jquery/js/jquery-2.2.1.min.js"></script>
-    <script type="text/javascript" src="../../static/jquery/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="../../static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/jquery/js/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="../../static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../../static/jquery/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/css/jquery-ui.css"/>
 
-    <link rel="stylesheet" href="../../static/css/styles.css"/>
-    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/styles.css"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/favicon.ico" type="image/x-icon">
 
     <title>Users</title>
 
@@ -18,6 +20,24 @@
             text-decoration: none;
             cursor: pointer;
             color: blue;
+
+        }
+
+        a {
+            font-size: 8pt;
+        }
+
+        tr th{
+            font-size: 8pt;
+        }
+
+        .btn {
+            font-size: 8pt;
+        }
+
+        #body {
+            background: #f8f8f8;
+            font-size: 8pt;
         }
 
     </style>
@@ -165,10 +185,10 @@
 
     </script>
 </head>
-<body style="background: #f8f8f8">
+<body id="body">
 <div class="container">
-    <div class="col-md-2"></div>
-    <div class="col-md-8" style="font-size: 15px">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
         <div class="panel panel-default" style=" margin-top: 20pt">
             <div class="panel-body">
                 <div style=" text-align: center ;">
@@ -209,7 +229,7 @@
             </form>
         </div>
         <div class="panel panel-default" style=" margin-top: 20pt">
-            <table class="table table-condensed tablesorter" id="table_with_users">
+            <table class="table table-condensed" id="table_with_users">
                 <thead>
                 <tr>
                     <th data-type="number">Login</th>
@@ -221,11 +241,11 @@
         </div>
         <div class="btn-group btn-group-justified" style="margin-bottom: 20pt ; margin-top: 20pt">
             <button id="add-new-user" type="button" class="btn btn-default"
-                    style="width: 50%">Add new user
+                    style="width: 40%;">Add new user
             </button>
         </div>
     </div>
-    <div class="col-md-2"></div>
+    <div class="col-md-3"></div>
 </div>
 
 </body>

@@ -1,33 +1,41 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script type="text/javascript" src="../../static/jquery/js/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/jquery/js/jquery-2.2.1.min.js"></script>
     <%--<script type="text/javascript" src="../../static/jquery/js/jquery.tablesorter.js"></script>--%>
-    <script type="text/javascript" src="../../static/jquery/js/jquery.tablesorter.min.js"></script>
-    <script type="text/javascript" src="../../static/jquery/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="../../static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/jquery/js/jquery.tablesorter.min.js"></script>
+    <%--<script type="text/javascript" src="../../static/jquery/js/jquery-1.11.1.min.js"></script>--%>
 
-    <link rel="stylesheet" href="../../static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../../static/jquery/css/jquery-ui.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="../../static/css/styles.css"/>
-    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/themes/blue/style.css">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/styles.css"/>
+
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/favicon.ico" type="image/x-icon">
 
     <title>Books</title>
 
     <style>
-        .thsort {
-            cursor: pointer;
-        }
-
-        .thsort:hover {
-            color: blue;
-        }
-
         a:hover {
             text-decoration: none;
             cursor: pointer;
             color: blue;
+        }
+
+        .btn {
+            font-size: 8pt;
+        }
+
+        #body {
+            background: #f8f8f8;
+            font-size: 8pt;
         }
     </style>
 
@@ -35,7 +43,7 @@
 
         var dialog;
         var bookUpdate = {};
-        var limit = -5;
+        var limit = 0;
         var currentUser = {};
         currentUser.id = 1;
 
@@ -92,9 +100,9 @@
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8'
             }).done(function (data) {
+                limit = limit + data.length;
                 $(data).each(function (i, book) {
-                    addRowToTable(book)
-                    limit+=1;
+                    addRowToTable(book);
                 });
             });
         }
@@ -155,6 +163,7 @@
                 bookUpdate.isn = book.isn;
                 bookUpdate.ownerId = book.ownerId;
                 bookUpdate.owner = book.owner;
+                $("#isn").val(book.isn);
                 $("#name").val(book.name);
                 $("#author").val(book.author);
                 $("#ui-id-1").text('Update book');
@@ -210,15 +219,14 @@
                 }
             });
             var name = $("#name"),
-                    author = $("#author");
+                    author = $("#author"),
+                    isn = $("#isn");
 
-            getBooks(limit + 5, 5);
+            getBooks(limit, 5);
 
             $("#show-more-books").button().on("click", function () {
-                getBooks(limit + 5, 5);
+                getBooks(limit, 5);
             });
-
-//            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
 
             $("#add-new-book").button().on("click", function () {
                 dialog.dialog("open");
@@ -233,23 +241,29 @@
                 event.preventDefault();
                 bookUpdate.name = name.val();
                 bookUpdate.author = author.val();
+                bookUpdate.isn = isn.val();
                 if ($("#ui-id-1").text() == 'Update book') {
                     updateBook(bookUpdate);
                     bookUpdate = {};
                 }
                 else {
+                    bookUpdate.ownerId = 0;
+                    bookUpdate.owner = null;
+                    bookUpdate.owner = null;
                     addBook(bookUpdate);
                     bookUpdate = {};
                 }
             });
+            //            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
+            $("#table_with_books").tablesorter();
         })
 
     </script>
 </head>
-<body style="background: #f8f8f8">
+<body id="body">
 <div class="container">
     <div class="col-md-2"></div>
-    <div class="col-md-8" style="font-size: 15px">
+    <div class="col-md-8">
         <div class="panel panel-default" style=" margin-top: 20pt">
             <div class="panel-body">
                 <div style=" text-align: center ;">
@@ -264,6 +278,13 @@
         </div>
         <div id="dialog-form" title="Create new book">
             <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="isn">ISN:</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="1" class="form-control" id="isn" placeholder="Enter isn"
+                               required>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="name">Name:</label>
                     <div class="col-sm-10">
@@ -289,17 +310,17 @@
             </form>
         </div>
         <div class="panel panel-default" style=" margin-top: 20pt">
-            <table class="table table-condensed tablesorter" id="table_with_books">
+            <table class="tablesorter table table-condensed" id="table_with_books">
                 <thead>
                 <tr>
-                    <th data-type="number">ISN</th>
-                    <th data-type="string" class="thsort">Author</th>
-                    <th data-type="string" class="thsort">Name</th>
-                    <th data-type="string">Owner</th>
+                    <th>ISN</th>
+                    <th>Author</th>
+                    <th>Name</th>
+                    <th>Owner</th>
                     <th>Action</th>
                 </tr>
                 </thead>
-                <tbody id="tbody_with_books"></tbody>
+                <tbody></tbody>
             </table>
         </div>
         <div class="btn-group btn-group-justified" style="margin-bottom: 20pt ; margin-top: 20pt">

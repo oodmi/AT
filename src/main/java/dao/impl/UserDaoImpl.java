@@ -32,7 +32,7 @@ public class UserDaoImpl implements UserDao {
 
     public User getUserById(Long id) {
         String sql = "select id, login from user where id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserMapper());
+        return jdbcTemplate.queryForObject(sql, new UserMapper(), id);
     }
 
     public boolean updateUser(User user) {
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
-            user.setId(rs.getString("id"));
+            user.setId(Long.valueOf(rs.getString("id")));
             user.setLogin(rs.getString("login"));
             return user;
         }

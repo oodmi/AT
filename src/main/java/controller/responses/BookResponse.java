@@ -3,7 +3,7 @@ package controller.responses;
 import persistence.Book;
 
 public class BookResponse {
-    private Integer isn;
+    private Long isn;
     private String author;
     private String name;
     private Long ownerId;
@@ -17,7 +17,7 @@ public class BookResponse {
         this.owner = owner;
     }
 
-    public Integer getIsn() {
+    public Long getIsn() {
         return isn;
     }
 

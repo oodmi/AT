@@ -3,7 +3,7 @@ package persistence;
 
 public class Book {
 
-    public Integer isn;
+    public Long isn;
     public String author;
     public String name;
     public Long ownerId;
@@ -11,7 +11,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Integer isn, String author, String name, Long ownerId) {
+    public Book(Long isn, String author, String name, Long ownerId) {
         this.isn = isn;
         this.author = author;
         this.name = name;

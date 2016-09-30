@@ -31,7 +31,7 @@ public class BookController {
         return bookService.deleteBook(isn);
     }
 
-    @RequestMapping(value = "/page/{offset}/{count}", method = RequestMethod.GET)
+    @RequestMapping(value = "/limit/{offset}/{count}", method = RequestMethod.GET)
     public List<BookResponse> getBooks(@PathVariable("offset") Long offset, @PathVariable("count") Long count) {
         return bookService.getBooks(offset, count);
     }

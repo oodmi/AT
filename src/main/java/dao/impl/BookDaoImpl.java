@@ -48,19 +48,19 @@ public class BookDaoImpl implements BookDao {
         return update != 0;
     }
 
-    public List<Book> getBooks(Long elementNumber, Long pageSize) {
+    public List<Book> getBooks(Long offset, Long count) {
         String sql = "SELECT * FROM book ORDER BY author LIMIT ? , ?";
-        List<Book> query = jdbcTemplate.query(sql, new Object[]{elementNumber, pageSize}, new BookMapper());
+        List<Book> query = jdbcTemplate.query(sql, new BookMapper(), offset, count);
         return query;
     }
 
     public void takeBook(Long owner, Long isn) {
-        String sql = "UPDATE book SET owner = ? WHERE isn = ?";
+        String sql = "UPDATE book SET ownerId = ? WHERE isn = ?";
         int update = jdbcTemplate.update(sql, owner, isn);
     }
 
     public void returnBook(Long isn) {
-        String sql = "UPDATE book SET owner = NULL WHERE isn = ?";
+        String sql = "UPDATE book SET ownerId = NULL WHERE isn = ?";
         int update = jdbcTemplate.update(sql, isn);
     }
 
@@ -69,10 +69,10 @@ public class BookDaoImpl implements BookDao {
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Book book = new Book();
-            book.isn = Integer.valueOf(rs.getString("isn"));
+            book.isn = Long.valueOf(rs.getString("isn"));
             book.author = rs.getString("author");
             book.name = rs.getString("name");
-            book.ownerId = Long.valueOf(rs.getString("owner"));
+            book.ownerId = rs.getString("ownerId") != null ? Long.valueOf(rs.getString("ownerId")) : 0L;
             return book;
         }
     }

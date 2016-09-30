@@ -33,7 +33,7 @@ public class BookService {
     public List<BookResponse> getBooks(Long offset, Long count) {
         List<Book> books = bookDao.getBooks(offset, count);
         return books.stream().map(
-                book -> new BookResponse(book, userService.getLoginById(book.ownerId))
+                book -> new BookResponse(book, book.ownerId != 0 ? userService.getLoginById(book.ownerId) : null)
         ).collect(Collectors.toList());
     }
 

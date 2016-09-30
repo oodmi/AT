@@ -34,22 +34,10 @@
     <script type="text/javascript">
 
         var dialog;
-        var oldIsn;
-        var ownerId;
-        var userOwn;
-        var currentUser = [];
-        currentUser.login = "Dmitry";
-
-        function getLoginByOwnerId(id) {
-            $.ajax("/user/" + id, {
-                method: "GET",
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8'
-            }).done(function (data) {
-                userOwn = data;
-            });
-            return true;
-        }
+        var bookUpdate = {};
+        var limit = -5;
+        var currentUser = {};
+        currentUser.id = 1;
 
         function deleteBook(isn) {
             if (!confirm("Do you really want to delete this book?")) return;
@@ -80,8 +68,8 @@
             })
         }
 
-        function updateBook(oldIsn, book) {
-            $.ajax("/book/" + oldIsn, {
+        function updateBook(book) {
+            $.ajax("/book/" + book.isn, {
                 method: "PUT",
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
@@ -89,7 +77,7 @@
             }).done(function (valid) {
                 if (valid) {
                     dialog.dialog("close");
-                    updateRowInTable(oldIsn, book)
+                    updateRowInTable(book)
                 }
                 else {
                     dialog.dialog("close");
@@ -98,14 +86,15 @@
             })
         }
 
-        function getBooks(path) {
-            $.ajax(path, {
+        function getBooks(offset, count) {
+            $.ajax("/book/limit/" + offset + "/" + count + "/", {
                 method: "GET",
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8'
             }).done(function (data) {
                 $(data).each(function (i, book) {
                     addRowToTable(book)
+                    limit+=1;
                 });
             });
         }
@@ -163,17 +152,17 @@
             $("#a" + book.isn).on("click", function (event) {
                 event.preventDefault();
                 dialog.dialog("open");
-                $("#isn").val(book.isn);
+                bookUpdate.isn = book.isn;
+                bookUpdate.ownerId = book.ownerId;
+                bookUpdate.owner = book.owner;
                 $("#name").val(book.name);
                 $("#author").val(book.author);
                 $("#ui-id-1").text('Update book');
-                oldIsn = book.isn;
-                ownerId = book.ownerId;
             });
             td2.innerHTML = book.author;
             td3.innerHTML = book.name;
 
-            if (book.ownerId == null) {
+            if (book.ownerId == 0) {
                 var buttonTake = document.createElement('button');
                 buttonTake.classList.add("btn", "btn-default");
                 buttonTake.innerHTML = "take";
@@ -181,7 +170,7 @@
                     takeBook(book.isn)
                 };
                 td4.appendChild(buttonTake);
-            } else if (currentUser.login == book.ownerId) {
+            } else if (currentUser.id == book.ownerId) {
                 var buttonReturn = document.createElement('button');
                 buttonReturn.classList.add("btn", "btn-default");
                 buttonReturn.innerHTML = "return";
@@ -190,8 +179,7 @@
                 };
                 td4.appendChild(buttonReturn);
             } else {
-                getLoginByOwnerId(book.ownerId);
-                td4.innerHTML = "i dont know"//userOwn.login;
+                td4.innerHTML = book.owner;
             }
 
             var button = document.createElement('button');
@@ -203,8 +191,8 @@
             td5.appendChild(button);
         }
 
-        function updateRowInTable(isn, book) {
-            $("#tr" + isn).remove();
+        function updateRowInTable(book) {
+            $("#tr" + book.isn).remove();
             addRowToTable(book);
         }
 
@@ -221,14 +209,13 @@
                     $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
                 }
             });
-            var isn = $("#isn"),
-                    name = $("#name"),
+            var name = $("#name"),
                     author = $("#author");
 
-            getBooks("/book/first/five/");
+            getBooks(limit + 5, 5);
 
             $("#show-more-books").button().on("click", function () {
-                getBooks("/book/");
+                getBooks(limit + 5, 5);
             });
 
 //            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
@@ -244,16 +231,15 @@
 
             dialog.find("form").on("submit", function (event) {
                 event.preventDefault();
-                var book = {};
-                book.isn = isn.val();
-                book.name = name.val();
-                book.author = author.val();
-                book.ownerId = ownerId;
+                bookUpdate.name = name.val();
+                bookUpdate.author = author.val();
                 if ($("#ui-id-1").text() == 'Update book') {
-                    updateBook(oldIsn, book);
+                    updateBook(bookUpdate);
+                    bookUpdate = {};
                 }
                 else {
-                    addBook(book);
+                    addBook(bookUpdate);
+                    bookUpdate = {};
                 }
             });
         })
@@ -278,13 +264,6 @@
         </div>
         <div id="dialog-form" title="Create new book">
             <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="isn">ISN:</label>
-                    <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="isn" placeholder="Enter isn"
-                               required>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="name">Name:</label>
                     <div class="col-sm-10">

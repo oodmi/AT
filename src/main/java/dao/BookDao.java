@@ -11,7 +11,7 @@ public interface BookDao {
 
     boolean deleteBook(Long isn);
 
-    List<Book> getBooks(Long elementNumber, Long limit);
+    List<Book> getBooks(Long offset, Long count);
 
     void takeBook(Long owner, Long isn);
 

@@ -14,9 +14,10 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/{login}", method = RequestMethod.GET)
-    public User getUserById(@PathVariable("login") String login) {
-        return userService.getUserByLogin(login);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public User getUserById(@PathVariable("id") Long id) {
+        User userById = userService.getUserById(id);
+        return userById;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -24,19 +25,20 @@ public class UserController {
         return userService.insertUser(user);
     }
 
-    @RequestMapping(value = "/{login}", method = RequestMethod.PUT)
-    public boolean updateUser(@PathVariable("login") String login, @RequestBody User user) {
-        return userService.updateUser(login, user);
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public boolean updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+        return userService.updateUser(id, user);
     }
 
-    @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
-    public boolean deleteUser(@PathVariable("login") String login) {
-        return userService.deleteUser(login);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public boolean deleteUser(@PathVariable("id") Long id) {
+        return userService.deleteUser(id);
     }
 
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<String> getUsers() {
-        return userService.getUsers();
+    public List<User> getUsers() {
+        List<User> users = userService.getUsers();
+        return users;
     }
 }

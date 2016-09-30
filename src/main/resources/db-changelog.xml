@@ -15,13 +15,20 @@
 
     <changeSet author="Dmitry" id="1">
         <createTable tableName="USER">
-            <column name="login" type="VARCHAR(255)">
+            <column name="id" type="INT(11)">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addAutoIncrement tableName="USER" columnName="id"
+                          columnDataType="INT(11)"
+                          incrementBy="1"
+                          startWith="1"/>
     </changeSet>
 
     <changeSet author="Dmitry" id="2">
@@ -35,7 +42,7 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="owner" type="VARCHAR(255)">
+            <column name="owner" type="INT(11)">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -44,7 +51,7 @@
     <changeSet id="3" author="Dmitry">
         <addForeignKeyConstraint baseTableName="BOOK" baseColumnNames="owner" constraintName="owner"
                                  referencedTableName="USER"
-                                 referencedColumnNames="login"/>
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="4" author="Dmitry">
@@ -67,13 +74,13 @@
             <column name="isn">1</column>
             <column name="author">Pushkin A.</column>
             <column name="name">Interesting book</column>
-            <column name="owner">Dmitry</column>
+            <column name="owner">1</column>
         </insert>
         <insert tableName="BOOK">
             <column name="isn">2</column>
             <column name="author">Fet A.</column>
             <column name="name">Interesting book</column>
-            <column name="owner">Vasy</column>
+            <column name="owner">1</column>
         </insert>
         <insert tableName="BOOK">
             <column name="isn">3</column>

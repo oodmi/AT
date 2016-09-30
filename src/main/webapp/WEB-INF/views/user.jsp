@@ -25,18 +25,16 @@
     <script type="text/javascript">
 
         var dialog;
-        var oldLogin;
-        var currentUser = [];
-        currentUser.login = "Dmitry";
+        var id;
 
-        function deleteUser(login) {
+        function deleteUser(user) {
             if (!confirm("Do you really want to delete this user?")) return;
-            $.ajax("/user/" + login, {
+            $.ajax("/user/" + user.id, {
                 method: "DELETE",
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8'
             }).done(function () {
-                $("#tr" + login).remove();
+                $("#tr" + user.id).remove();
             });
         }
 
@@ -49,7 +47,7 @@
             }).done(function (valid) {
                 if (valid) {
                     dialog.dialog("close");
-                    addRowToTable(user.login)
+                    addRowToTable(user)
                 }
                 else {
                     dialog.dialog("close");
@@ -58,8 +56,8 @@
             })
         }
 
-        function updateUser(oldLogin, user) {
-            $.ajax("/user/" + oldLogin, {
+        function updateUser(user) {
+            $.ajax("/user/" + user.id, {
                 method: "PUT",
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
@@ -67,7 +65,7 @@
             }).done(function (valid) {
                 if (valid) {
                     dialog.dialog("close");
-                    updateRowInTable(oldLogin, user.login)
+                    updateRowInTable(user)
                 }
                 else {
                     dialog.dialog("close");
@@ -82,17 +80,17 @@
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8'
             }).done(function (data) {
-                $(data).each(function (i, login) {
-                    addRowToTable(login)
+                $(data).each(function (i, user) {
+                    addRowToTable(user)
                 });
             });
         }
 
-        function addRowToTable(login) {
+        function addRowToTable(user) {
             var table = document.getElementById("table_with_users");
             var tbody = table.lastElementChild;
             var tr = document.createElement('tr');
-            tr.id = "tr" + login;
+            tr.id = "tr" + user.id;
             tbody.appendChild(tr);
 
             var td1 = document.createElement('td');
@@ -101,27 +99,27 @@
             tr.appendChild(td1);
             tr.appendChild(td2);
 
-            td1.innerHTML = "<a id='a" + login + "'>" + login + "</a>";
-            $("#a" + login).on("click", function (event) {
+            td1.innerHTML = "<a id='a" + user.id + "'>" + user.login + "</a>";
+            $("#a" + user.id).on("click", function (event) {
                 event.preventDefault();
                 dialog.dialog("open");
-                $("#login").val(login);
+                $("#login").val(user.login);
+                id = user.id;
                 $("#ui-id-1").text('Update user');
-                oldLogin = login;
             });
 
             var button = document.createElement('button');
             button.classList.add("btn", "btn-default");
             button.innerHTML = "delete";
             button.onclick = function () {
-                deleteUser(login)
+                deleteUser(user)
             };
             td2.appendChild(button);
         }
 
-        function updateRowInTable(oldlogin, login) {
-            $("#tr" + oldLogin).remove();
-            addRowToTable(login);
+        function updateRowInTable(user) {
+            $("#tr" + user.id).remove();
+            addRowToTable(user);
         }
 
         $(document).ready(function () {
@@ -153,10 +151,11 @@
             dialog.find("form").on("submit", function (event) {
                 event.preventDefault();
                 var user = {};
+                user.id = id;
                 user.login = login.val();
                 user.password = password.val();
                 if ($("#ui-id-1").text() == 'Update user') {
-                    updateUser(oldLogin, user);
+                    updateUser(user);
                 }
                 else {
                     addUser(user);

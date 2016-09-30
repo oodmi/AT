@@ -30,21 +30,16 @@ public class UserDaoImpl implements UserDao {
         return update != 0;
     }
 
-    public User getUserByLogin(String login) {
-        String sql = "select * from user where login = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{login}, new UserMapper());
+    public User getUserById(Long id) {
+        String sql = "select id,login from user where id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserMapper());
     }
 
-    public boolean updateUser(String login, User user) {
-        String sql1 = "Select login from user where login = ?";
-        String sql3 = "update user set password = ?, login = ? where login = ?";
-        String sql2 = "update book set owner = ? where owner = ?";
+    public boolean updateUser(Long id, User user) {
+        String sql = "update user set login = ?, password = ? where id = ?";
         int update = 0;
         try {
-            if (jdbcTemplate.query(sql1, new Object[]{login}, new UserLoginMapper()).size() != 0) {
-                jdbcTemplate.update(sql2, user.getLogin(), login);
-                update = jdbcTemplate.update(sql3, user.getPassword(), user.getLogin(), login);
-            } else return false;
+            update = jdbcTemplate.update(sql, user.getLogin(), user.getPassword(), id);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -52,11 +47,11 @@ public class UserDaoImpl implements UserDao {
         return update != 0;
     }
 
-    public boolean deleteUser(String login) {
-        String sql = "delete from user where login = ?";
+    public boolean deleteUser(Long id) {
+        String sql = "delete from user where id = ?";
         int update;
         try {
-            update = jdbcTemplate.update(sql, login);
+            update = jdbcTemplate.update(sql, id);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -64,9 +59,9 @@ public class UserDaoImpl implements UserDao {
         return update != 0;
     }
 
-    public List<String> getUsers() {
-        String sql = "select login from user order by login";
-        return jdbcTemplate.query(sql, new UserLoginMapper());
+    public List<User> getUsers() {
+        String sql = "select id, login from user order by login";
+        return jdbcTemplate.query(sql, new UserMapper());
     }
 
     private static final class UserMapper implements RowMapper<User> {
@@ -74,17 +69,10 @@ public class UserDaoImpl implements UserDao {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
+            user.setId(rs.getString("id"));
             user.setLogin(rs.getString("login"));
-            user.setPassword(rs.getString("password"));
+            //user.setPassword((rs.getString("password"));
             return user;
-        }
-    }
-
-    private static final class UserLoginMapper implements RowMapper<String> {
-
-        @Override
-        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return rs.getString("login");
         }
     }
 }

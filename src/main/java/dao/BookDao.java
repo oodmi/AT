@@ -15,7 +15,7 @@ public interface BookDao {
 
     List<Book> getBooks(Long limit);
 
-    void takeBook(String login, Long id);
+    void takeBook(Long owner, Long id);
 
     void returnBook(Long id);
 }

@@ -44,8 +44,8 @@ public class BookServiceImpl implements BookService {
         return bookDao.getBooks(limit);
     }
 
-    public void takeBook(String login, Long id) {
-        bookDao.takeBook(login, id);
+    public void takeBook(Long owner, Long id) {
+        bookDao.takeBook(owner, id);
     }
 
 

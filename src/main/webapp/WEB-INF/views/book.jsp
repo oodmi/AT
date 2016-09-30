@@ -35,9 +35,21 @@
 
         var dialog;
         var oldIsn;
-        var limit = 0;
+        var owner;
+        var userOwn;
         var currentUser = [];
         currentUser.login = "Dmitry";
+
+        function getLoginByOwnerId(id) {
+            $.ajax("/user/" + id, {
+                method: "GET",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8'
+            }).done(function (data) {
+                userOwn = data;
+            });
+            return true;
+        }
 
         function deleteBook(isn) {
             if (!confirm("Do you really want to delete this book?")) return;
@@ -95,15 +107,13 @@
                 $(data).each(function (i, book) {
                     addRowToTable(book)
                 });
-                limit += 5;
             });
         }
 
         function takeBook(isn) {
             $.ajax("/book/take/" + isn, {
                 method: "PUT",
-                contentType: 'application/json; charset=utf-8',
-                data: currentUser.login
+                contentType: 'application/json; charset=utf-8'
             }).done(function () {
                 var buttonReturn = document.createElement('button');
                 buttonReturn.classList.add("btn", "btn-default");
@@ -158,6 +168,7 @@
                 $("#author").val(book.author);
                 $("#ui-id-1").text('Update book');
                 oldIsn = book.isn;
+                owner = book.owner;
             });
             td2.innerHTML = book.author;
             td3.innerHTML = book.name;
@@ -179,7 +190,8 @@
                 };
                 td4.appendChild(buttonReturn);
             } else {
-                td4.innerHTML = book.owner;
+                getLoginByOwnerId(book.owner);
+                td4.innerHTML = "i dont know"//userOwn.login;
             }
 
             var button = document.createElement('button');
@@ -236,7 +248,7 @@
                 book.isn = isn.val();
                 book.name = name.val();
                 book.author = author.val();
-                book.owner = null;
+                book.owner = owner;
                 if ($("#ui-id-1").text() == 'Update book') {
                     updateBook(oldIsn, book);
                 }

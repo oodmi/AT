@@ -45,13 +45,13 @@ public class BookController {
     }
 
     @RequestMapping(value = "/take/{id}", method = RequestMethod.PUT)
-    public void takeBook(@PathVariable("id") Long id, @RequestBody String login) {
-        bookService.takeBook(login, id);
+    public void takeBook(@PathVariable("id") Long id) {
+//        bookService.takeBook(id);
     }
 
     @RequestMapping(value = "/return/{id}", method = RequestMethod.PUT)
     public void returnBook(@PathVariable("id") Long id) {
-        bookService.returnBook(id);
+//        bookService.returnBook(id);
     }
 
 }

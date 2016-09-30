@@ -59,9 +59,9 @@ public class BookDaoImpl implements BookDao {
         return query;
     }
 
-    public void takeBook(String login, Long id) {
+    public void takeBook(Long owner, Long id) {
         String sql = "UPDATE book SET owner = ? WHERE isn = ?";
-        int update = jdbcTemplate.update(sql, login, id);
+        int update = jdbcTemplate.update(sql, owner, id);
     }
 
     public void returnBook(Long id) {

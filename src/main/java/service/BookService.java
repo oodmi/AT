@@ -18,8 +18,8 @@ public interface BookService {
 
     List<Book> getFirstFiveBooks();
 
-    void takeBook(String login, Long id);
+    void takeBook(Long owner, Long id);
 
-    void returnBook( Long id);
+    void returnBook(Long id);
 
 }

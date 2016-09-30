@@ -18,19 +18,23 @@ public class UserServiceImpl implements UserService {
         return userDao.insertUser(user);
     }
 
-    public User getUserByLogin(String login) {
-        return userDao.getUserByLogin(login);
+    public User getUserById(Long id) {
+        return userDao.getUserById(id);
     }
 
-    public boolean updateUser(String login, User user) {
-        return userDao.updateUser(login, user);
+    public boolean updateUser(Long id, User user) {
+        return userDao.updateUser(id, user);
     }
 
-    public boolean deleteUser(String login) {
-        return userDao.deleteUser(login);
+    public boolean deleteUser(Long id) {
+        return userDao.deleteUser(id);
     }
 
-    public List<String> getUsers() {
+    public List<User> getUsers() {
         return userDao.getUsers();
+    }
+
+    public String getLoginById(Long id) {
+        return userDao.getUserById(id).getLogin();
     }
 }

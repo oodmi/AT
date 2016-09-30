@@ -1,51 +1,21 @@
 package persistence;
 
+
 public class Book {
 
-    private Integer isn;
-    private String author;
-    private String name;
-    private String owner;
+    public Integer isn;
+    public String author;
+    public String name;
+    public Long ownerId;
 
     public Book() {
     }
 
-    public Book(Integer isn, String author, String name, String owner) {
+    public Book(Integer isn, String author, String name, Long ownerId) {
         this.isn = isn;
         this.author = author;
         this.name = name;
-        this.owner = owner;
+        this.ownerId = ownerId;
     }
 
-    public Integer getIsn() {
-        return isn;
-    }
-
-    public void setIsn(Integer isn) {
-        this.isn = isn;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 }

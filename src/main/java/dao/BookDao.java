@@ -7,15 +7,13 @@ import java.util.List;
 public interface BookDao {
     boolean insertBook(Book book);
 
-    Book getBookById(Long id);
+    boolean updateBook(Book book);
 
-    boolean updateBook(Long id, Book book);
+    boolean deleteBook(Long isn);
 
-    boolean deleteBook(Long id);
+    List<Book> getBooks(Long elementNumber, Long limit);
 
-    List<Book> getBooks(Long limit);
+    void takeBook(Long owner, Long isn);
 
-    void takeBook(Long owner, Long id);
-
-    void returnBook(Long id);
+    void returnBook(Long isn);
 }

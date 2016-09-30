@@ -1,10 +1,12 @@
 package controller;
 
+import controller.responses.BookResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import persistence.Book;
 import service.BookService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -14,44 +16,34 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Book getBookById(@PathVariable("id") Long id) {
-        return bookService.getBookById(id);
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public boolean insertBook(@RequestBody Book book) {
         return bookService.insertBook(book);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public boolean updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    @RequestMapping(value = "/{isn}", method = RequestMethod.PUT)
+    public boolean updateBook(@PathVariable("isn") Long isn, @RequestBody Book book) {
+        return bookService.updateBook(book);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public boolean deleteBook(@PathVariable("id") Long id) {
-        return bookService.deleteBook(id);
+    @RequestMapping(value = "/{isn}", method = RequestMethod.DELETE)
+    public boolean deleteBook(@PathVariable("isn") Long isn) {
+        return bookService.deleteBook(isn);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<Book> getBooks() {
-        return bookService.getBooks();
+    @RequestMapping(value = "/page/{offset}/{count}", method = RequestMethod.GET)
+    public List<BookResponse> getBooks(@PathVariable("offset") Long offset, @PathVariable("count") Long count) {
+        return bookService.getBooks(offset, count);
     }
 
-    @RequestMapping(value = "/first/five/", method = RequestMethod.GET)
-    public List<Book> getFirstFiveBooks() {
-        return bookService.getFirstFiveBooks();
+    @RequestMapping(value = "/take/{isn}", method = RequestMethod.PUT)
+    public void takeBook(@PathVariable("isn") Long isn) {
+//        bookService.takeBook(isn);
     }
 
-    @RequestMapping(value = "/take/{id}", method = RequestMethod.PUT)
-    public void takeBook(@PathVariable("id") Long id) {
-//        bookService.takeBook(id);
-    }
-
-    @RequestMapping(value = "/return/{id}", method = RequestMethod.PUT)
-    public void returnBook(@PathVariable("id") Long id) {
-//        bookService.returnBook(id);
+    @RequestMapping(value = "/return/{isn}", method = RequestMethod.PUT)
+    public void returnBook(@PathVariable("isn") Long isn) {
+//        bookService.returnBook(isn);
     }
 
 }

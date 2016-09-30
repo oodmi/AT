@@ -35,7 +35,7 @@
 
         var dialog;
         var oldIsn;
-        var owner;
+        var ownerId;
         var userOwn;
         var currentUser = [];
         currentUser.login = "Dmitry";
@@ -168,12 +168,12 @@
                 $("#author").val(book.author);
                 $("#ui-id-1").text('Update book');
                 oldIsn = book.isn;
-                owner = book.owner;
+                ownerId = book.ownerId;
             });
             td2.innerHTML = book.author;
             td3.innerHTML = book.name;
 
-            if (book.owner == null) {
+            if (book.ownerId == null) {
                 var buttonTake = document.createElement('button');
                 buttonTake.classList.add("btn", "btn-default");
                 buttonTake.innerHTML = "take";
@@ -181,7 +181,7 @@
                     takeBook(book.isn)
                 };
                 td4.appendChild(buttonTake);
-            } else if (currentUser.login == book.owner) {
+            } else if (currentUser.login == book.ownerId) {
                 var buttonReturn = document.createElement('button');
                 buttonReturn.classList.add("btn", "btn-default");
                 buttonReturn.innerHTML = "return";
@@ -190,7 +190,7 @@
                 };
                 td4.appendChild(buttonReturn);
             } else {
-                getLoginByOwnerId(book.owner);
+                getLoginByOwnerId(book.ownerId);
                 td4.innerHTML = "i dont know"//userOwn.login;
             }
 
@@ -248,7 +248,7 @@
                 book.isn = isn.val();
                 book.name = name.val();
                 book.author = author.val();
-                book.owner = owner;
+                book.ownerId = ownerId;
                 if ($("#ui-id-1").text() == 'Update book') {
                     updateBook(oldIsn, book);
                 }

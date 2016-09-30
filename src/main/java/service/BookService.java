@@ -1,25 +1,48 @@
 package service;
 
+import controller.responses.BookResponse;
+import dao.BookDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import persistence.Book;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public interface BookService {
+@Service
+public class BookService {
 
-    boolean insertBook(Book book);
+    @Autowired
+    BookDao bookDao;
 
-    Book getBookById(Long id);
+    @Autowired
+    UserService userService;
 
-    boolean updateBook(Long id, Book book);
+    public boolean insertBook(Book book) {
+        return bookDao.insertBook(book);
+    }
 
-    boolean deleteBook(Long id);
+    public boolean updateBook(Book book) {
+        return bookDao.updateBook(book);
+    }
 
-    List<Book> getBooks();
+    public boolean deleteBook(Long isn) {
+        return bookDao.deleteBook(isn);
+    }
 
-    List<Book> getFirstFiveBooks();
+    public List<BookResponse> getBooks(Long offset, Long count) {
+        List<Book> books = bookDao.getBooks(offset, count);
+        return books.stream().map(
+                book -> new BookResponse(book, userService.getLoginById(book.ownerId))
+        ).collect(Collectors.toList());
+    }
 
-    void takeBook(Long owner, Long id);
+    public void takeBook(Long owner, Long id) {
+        bookDao.takeBook(owner, id);
+    }
 
-    void returnBook(Long id);
 
+    public void returnBook(Long id) {
+        bookDao.returnBook(id);
+    }
 }

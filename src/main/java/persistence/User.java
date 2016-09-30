@@ -6,15 +6,6 @@ public class User {
     private String login;
     private String password;
 
-    public User() {
-    }
-
-    public User(String id, String login, String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-    }
-
     public String getId() {
         return id;
     }
@@ -38,5 +29,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

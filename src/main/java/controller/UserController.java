@@ -27,7 +27,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public boolean updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+        return userService.updateUser(user);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

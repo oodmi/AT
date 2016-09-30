@@ -42,14 +42,14 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="owner" type="INT(11)">
+            <column name="ownerId" type="INT(11)">
                 <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="3" author="Dmitry">
-        <addForeignKeyConstraint baseTableName="BOOK" baseColumnNames="owner" constraintName="owner"
+        <addForeignKeyConstraint baseTableName="BOOK" baseColumnNames="ownerId" constraintName="ownerId"
                                  referencedTableName="USER"
                                  referencedColumnNames="id"/>
     </changeSet>
@@ -74,19 +74,19 @@
             <column name="isn">1</column>
             <column name="author">Pushkin A.</column>
             <column name="name">Interesting book</column>
-            <column name="owner">1</column>
+            <column name="ownerId">1</column>
         </insert>
         <insert tableName="BOOK">
             <column name="isn">2</column>
             <column name="author">Fet A.</column>
             <column name="name">Interesting book</column>
-            <column name="owner">1</column>
+            <column name="ownerId">1</column>
         </insert>
         <insert tableName="BOOK">
             <column name="isn">3</column>
             <column name="author">Kel M.</column>
             <column name="name">Interesting book</column>
-            <column name="owner"></column>
+            <column name="ownerId"></column>
         </insert>
     </changeSet>
 

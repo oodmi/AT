@@ -22,7 +22,7 @@ public class BookDaoImpl implements BookDao {
         String sql = "INSERT INTO book(isn,author,name) VALUES(?,?,?)";
         int update;
         try {
-            update = jdbcTemplate.update(sql, book.getIsn(), book.getAuthor(), book.getName());
+            update = jdbcTemplate.update(sql, book.isn, book.author, book.name);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -30,16 +30,11 @@ public class BookDaoImpl implements BookDao {
         return update != 0;
     }
 
-    public Book getBookById(Long id) {
-        String sql = "SELECT * FROM book WHERE isn = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new BookMapper());
-    }
-
-    public boolean updateBook(Long id, Book book) {
-        String sql = "UPDATE book SET isn = ? , name = ? , author = ? WHERE isn = ?";
+    public boolean updateBook(Book book) {
+        String sql = "UPDATE book SET name = ? , author = ? WHERE isn = ?";
         int update;
         try {
-            update = jdbcTemplate.update(sql, book.getIsn(), book.getName(), book.getAuthor(), id);
+            update = jdbcTemplate.update(sql, book.name, book.author, book.isn);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -47,26 +42,26 @@ public class BookDaoImpl implements BookDao {
         return update != 0;
     }
 
-    public boolean deleteBook(Long id) {
+    public boolean deleteBook(Long isn) {
         String sql = "DELETE FROM book WHERE isn = ?";
-        int update = jdbcTemplate.update(sql, id);
+        int update = jdbcTemplate.update(sql, isn);
         return update != 0;
     }
 
-    public List<Book> getBooks(Long limit) {
-        String sql = "SELECT * FROM book ORDER BY author LIMIT ? , 5";
-        List<Book> query = jdbcTemplate.query(sql, new BookMapper(), limit);
+    public List<Book> getBooks(Long elementNumber, Long pageSize) {
+        String sql = "SELECT * FROM book ORDER BY author LIMIT ? , ?";
+        List<Book> query = jdbcTemplate.query(sql, new Object[]{elementNumber, pageSize}, new BookMapper());
         return query;
     }
 
-    public void takeBook(Long owner, Long id) {
+    public void takeBook(Long owner, Long isn) {
         String sql = "UPDATE book SET owner = ? WHERE isn = ?";
-        int update = jdbcTemplate.update(sql, owner, id);
+        int update = jdbcTemplate.update(sql, owner, isn);
     }
 
-    public void returnBook(Long id) {
+    public void returnBook(Long isn) {
         String sql = "UPDATE book SET owner = NULL WHERE isn = ?";
-        int update = jdbcTemplate.update(sql, id);
+        int update = jdbcTemplate.update(sql, isn);
     }
 
     private static final class BookMapper implements RowMapper<Book> {
@@ -74,10 +69,10 @@ public class BookDaoImpl implements BookDao {
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Book book = new Book();
-            book.setIsn(Integer.valueOf(rs.getString("isn")));
-            book.setAuthor(rs.getString("author"));
-            book.setName(rs.getString("name"));
-            book.setOwner(rs.getString("owner"));
+            book.isn = Integer.valueOf(rs.getString("isn"));
+            book.author = rs.getString("author");
+            book.name = rs.getString("name");
+            book.ownerId = Long.valueOf(rs.getString("owner"));
             return book;
         }
     }

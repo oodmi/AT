@@ -1,20 +1,39 @@
 package service;
 
+import dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import persistence.User;
 
 import java.util.List;
 
-public interface UserService {
+@Service
+public class UserService {
 
-    boolean insertUser(User user);
+    @Autowired
+    UserDao userDao;
 
-    User getUserById(Long id);
+    public boolean insertUser(User user) {
+        return userDao.insertUser(user);
+    }
 
-    boolean updateUser(Long id, User user);
+    public User getUserById(Long id) {
+        return userDao.getUserById(id);
+    }
 
-    boolean deleteUser(Long id);
+    public boolean updateUser(User user) {
+        return userDao.updateUser(user);
+    }
 
-    List<User> getUsers();
+    public boolean deleteUser(Long id) {
+        return userDao.deleteUser(id);
+    }
 
-    String getLoginById(Long id);
+    public List<User> getUsers() {
+        return userDao.getUsers();
+    }
+
+    public String getLoginById(Long id) {
+        return userDao.getUserById(id).getLogin();
+    }
 }

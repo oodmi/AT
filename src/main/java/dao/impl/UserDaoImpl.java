@@ -31,15 +31,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User getUserById(Long id) {
-        String sql = "select id,login from user where id = ?";
+        String sql = "select id, login from user where id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserMapper());
     }
 
-    public boolean updateUser(Long id, User user) {
+    public boolean updateUser(User user) {
         String sql = "update user set login = ?, password = ? where id = ?";
         int update = 0;
         try {
-            update = jdbcTemplate.update(sql, user.getLogin(), user.getPassword(), id);
+            update = jdbcTemplate.update(sql, user.getLogin(), user.getPassword(), user.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -71,7 +71,6 @@ public class UserDaoImpl implements UserDao {
             User user = new User();
             user.setId(rs.getString("id"));
             user.setLogin(rs.getString("login"));
-            //user.setPassword((rs.getString("password"));
             return user;
         }
     }

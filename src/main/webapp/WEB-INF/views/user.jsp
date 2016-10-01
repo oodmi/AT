@@ -2,16 +2,16 @@
 <html>
 <head>
     <script type="text/javascript"
-            src="${pageContext.request.contextPath}/static/jquery/js/jquery-2.2.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui.js"></script>
+            src="../../static/jquery/js/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="../../static/jquery/js/jquery-ui.js"></script>
     <script type="text/javascript"
-            src="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+            src="../../static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../static/jquery/css/jquery-ui.css"/>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/styles.css"/>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/css/styles.css"/>
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
 
     <title>Users</title>
 
@@ -27,7 +27,7 @@
             font-size: 8pt;
         }
 
-        tr th{
+        tr th {
             font-size: 8pt;
         }
 

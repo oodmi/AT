@@ -2,23 +2,23 @@
 <html>
 <head>
     <script type="text/javascript"
-            src="${pageContext.request.contextPath}/static/jquery/js/jquery-2.2.1.min.js"></script>
+            src="../../static/jquery/js/jquery-2.2.1.min.js"></script>
     <%--<script type="text/javascript" src="../../static/jquery/js/jquery.tablesorter.js"></script>--%>
     <script type="text/javascript"
-            src="${pageContext.request.contextPath}/static/jquery/js/jquery.tablesorter.min.js"></script>
+            src="../../static/jquery/js/jquery.tablesorter.min.js"></script>
     <%--<script type="text/javascript" src="../../static/jquery/js/jquery-1.11.1.min.js"></script>--%>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../static/jquery/js/jquery-ui.js"></script>
     <script type="text/javascript"
-            src="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+            src="../../static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/css/jquery-ui.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/themes/blue/style.css">
+    <link rel="stylesheet" href="../../static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../static/jquery/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/jquery/themes/blue/style.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/styles.css"/>
+    <link rel="stylesheet" href="../../static/css/styles.css"/>
 
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
 
     <title>Books</title>
 
@@ -47,6 +47,11 @@
         var currentUser = {};
         currentUser.id = 1;
 
+        function updateSort() {
+            $('#table_with_books').trigger("update");
+            $('#table_with_books').trigger("sorton", [[[1, 0]]]);
+        }
+
         function deleteBook(isn) {
             if (!confirm("Do you really want to delete this book?")) return;
             $.ajax("/book/" + isn, {
@@ -68,6 +73,7 @@
                 if (valid) {
                     dialog.dialog("close");
                     addRowToTable(book)
+                    updateSort();
                 }
                 else {
                     dialog.dialog("close");
@@ -86,6 +92,7 @@
                 if (valid) {
                     dialog.dialog("close");
                     updateRowInTable(book)
+                    updateSort();
                 }
                 else {
                     dialog.dialog("close");
@@ -104,6 +111,7 @@
                 $(data).each(function (i, book) {
                     addRowToTable(book);
                 });
+                updateSort();
             });
         }
 
@@ -163,7 +171,8 @@
                 bookUpdate.isn = book.isn;
                 bookUpdate.ownerId = book.ownerId;
                 bookUpdate.owner = book.owner;
-                $("#isn").val(book.isn);
+                $("#isn").val(book.isn).disabled = true;
+                document.getElementById("isn").disabled = true;
                 $("#name").val(book.name);
                 $("#author").val(book.author);
                 $("#ui-id-1").text('Update book');
@@ -229,6 +238,7 @@
             });
 
             $("#add-new-book").button().on("click", function () {
+                document.getElementById("isn").disabled = false;
                 dialog.dialog("open");
                 $("#ui-id-1").text('Create new book')
             });
@@ -254,8 +264,20 @@
                     bookUpdate = {};
                 }
             });
-            //            $("#table_with_books").tablesorter({sortList: [[0, 0], [1, 0]]});
-            $("#table_with_books").tablesorter();
+            $("#table_with_books").tablesorter({
+//                sortList: [[1, 0]],
+                headers: {
+                    0: {
+                        sorter: false
+                    },
+                    3: {
+                        sorter: false
+                    },
+                    4: {
+                        sorter: false
+                    }
+                }
+            });
         })
 
     </script>

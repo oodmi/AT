@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page session="true"%>
 <html>
 <head>
     <script type="text/javascript"
@@ -45,11 +47,11 @@
         var bookUpdate = {};
         var limit = 0;
         var currentUser = {};
-        currentUser.id = 1;
+        currentUser.name = '<c:out value="${pageContext.request.userPrincipal.name}"/>';
 
         function updateSort() {
             $('#table_with_books').trigger("update");
-            $('#table_with_books').trigger("sorton", [[[1, 0]]]);
+            $('#table_with_books').trigger("sorton", [[[1,0]]]);//$('#table_with_books').get(0).config.sortList);
         }
 
         function deleteBook(isn) {
@@ -72,7 +74,7 @@
             }).done(function (valid) {
                 if (valid) {
                     dialog.dialog("close");
-                    addRowToTable(book)
+                    addRowToTable(book);
                     updateSort();
                 }
                 else {
@@ -91,7 +93,7 @@
             }).done(function (valid) {
                 if (valid) {
                     dialog.dialog("close");
-                    updateRowInTable(book)
+                    updateRowInTable(book);
                     updateSort();
                 }
                 else {
@@ -188,7 +190,7 @@
                     takeBook(book.isn)
                 };
                 td4.appendChild(buttonTake);
-            } else if (currentUser.id == book.ownerId) {
+            } else if ( currentUser.name == book.owner ) {
                 var buttonReturn = document.createElement('button');
                 buttonReturn.classList.add("btn", "btn-default");
                 buttonReturn.innerHTML = "return";

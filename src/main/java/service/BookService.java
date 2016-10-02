@@ -3,6 +3,8 @@ package service;
 import controller.responses.BookResponse;
 import dao.BookDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import persistence.Book;
 
@@ -37,12 +39,14 @@ public class BookService {
         ).collect(Collectors.toList());
     }
 
-    public void takeBook(Long owner, Long id) {
-        bookDao.takeBook(owner, id);
+    public void takeBook(Long isn) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = user.getUsername();
+        persistence.User idByLogin = userService.getIdByLogin(name);
+        bookDao.takeBook(idByLogin.getId(), isn);
     }
 
-
-    public void returnBook(Long id) {
-        bookDao.returnBook(id);
+    public void returnBook(Long isn) {
+        bookDao.returnBook(isn);
     }
 }

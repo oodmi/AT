@@ -64,8 +64,12 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.query(sql, new UserMapper());
     }
 
-    private static final class UserMapper implements RowMapper<User> {
+    public User getIdByClass(String login) {
+        String sql = "select id, login from user where login = ?";
+        return jdbcTemplate.queryForObject(sql, new UserMapper(), login);
+    }
 
+    private static final class UserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();

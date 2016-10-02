@@ -36,4 +36,8 @@ public class UserService {
     public String getLoginById(Long id) {
         return userDao.getUserById(id)!=null?userDao.getUserById(id).getLogin():null;
     }
+
+    public User getIdByLogin(String login){
+        return userDao.getIdByClass(login);
+    }
 }

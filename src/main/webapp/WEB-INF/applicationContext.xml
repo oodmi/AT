@@ -42,5 +42,4 @@
     <!--<jdbc:script location="classpath:db/sql/insert-data.sql"/>-->
     </jdbc:embedded-database>
 
-
 </beans>

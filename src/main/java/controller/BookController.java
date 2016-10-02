@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import persistence.Book;
 import service.BookService;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -38,12 +37,11 @@ public class BookController {
 
     @RequestMapping(value = "/take/{isn}", method = RequestMethod.PUT)
     public void takeBook(@PathVariable("isn") Long isn) {
-//        bookService.takeBook(isn);
+        bookService.takeBook(isn);
     }
 
     @RequestMapping(value = "/return/{isn}", method = RequestMethod.PUT)
     public void returnBook(@PathVariable("isn") Long isn) {
-//        bookService.returnBook(isn);
+        bookService.returnBook(isn);
     }
-
 }

@@ -60,7 +60,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     public void returnBook(Long isn) {
-        String sql = "UPDATE book SET ownerId = NULL WHERE isn = ?";
+        String sql = "UPDATE book SET ownerId = null WHERE isn = ?";
         int update = jdbcTemplate.update(sql, isn);
     }
 

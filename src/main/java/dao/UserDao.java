@@ -14,4 +14,6 @@ public interface UserDao {
     boolean deleteUser(Long id);
 
     List<User> getUsers();
+
+    User getIdByClass(String login);
 }

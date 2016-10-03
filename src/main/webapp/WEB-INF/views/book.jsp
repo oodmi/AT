@@ -3,26 +3,27 @@
 <%@page session="true" %>
 <html>
 <head>
-    <script type="text/javascript"
-            src="../../static/jquery/js/jquery-2.2.1.min.js"></script>
-    <script type="text/javascript"
-            src="../../static/jquery/js/jquery.tablesorter.min.js"></script>
-    <script type="text/javascript" src="../../static/jquery/js/jquery-ui.js"></script>
-    <script type="text/javascript"
-            src="../../static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../static/js/script.book.js"></script>
-
-    <link rel="stylesheet" href="../../static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../../static/jquery/css/jquery-ui.css"/>
-    <link rel="stylesheet" href="../../static/jquery/themes/blue/style.css">
-    <link rel="stylesheet" href="../../static/css/book-style.css"/>
-
-    <link rel="shortcut icon" href="../../static/images/favicon.ico" type="image/x-icon">
-
     <script>
-        var currentUser = {};
-        currentUser.name = '<c:out value="${pageContext.request.userPrincipal.name}"/>';
+        var currentUser = {
+            name: "${pageContext.request.userPrincipal.name}"
+        };
+        var url = "${pageContext.request.contextPath}";
     </script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/jquery/js/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/jquery/js/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery/js/jquery-ui.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/script.book.js"></script>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/bootstrap-3.3.6-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/jquery/themes/blue/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/book-style.css"/>
+
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/favicon.ico" type="image/x-icon">
 
     <title>Books</title>
 
@@ -34,10 +35,10 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div id="head-div">
-                    <a href="${pageContext.request.contextPath}/view/user/"
+                    <a href="${pageContext.request.contextPath}/user"
                        style="color: #3897f0; text-decoration: none">
                         Users</a>
-                    <a href="${pageContext.request.contextPath}/view/book/"
+                    <a href="${pageContext.request.contextPath}/book"
                        style="color: #3897f0; text-decoration: none">
                         Books</a>
                 </div>

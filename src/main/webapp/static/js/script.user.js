@@ -3,7 +3,7 @@ var id;
 
 function deleteUser(user) {
     if (!confirm("Do you really want to delete this user?")) return;
-    $.ajax("/user/" + user.id, {
+    $.ajax(url + "/user/" + user.id, {
         method: "DELETE",
         dataType: "json",
         contentType: 'application/json; charset=utf-8'
@@ -13,7 +13,7 @@ function deleteUser(user) {
 }
 
 function addUser(user) {
-    $.ajax("/user/", {
+    $.ajax(url + "/user/", {
         method: "POST",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
@@ -31,7 +31,7 @@ function addUser(user) {
 }
 
 function updateUser(user) {
-    $.ajax("/user/" + user.id, {
+    $.ajax(url + "/user/" + user.id, {
         method: "PUT",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
@@ -49,7 +49,7 @@ function updateUser(user) {
 }
 
 function getUsers() {
-    $.ajax("/user/", {
+    $.ajax(url + "/user/", {
         method: "GET",
         dataType: "json",
         contentType: 'application/json; charset=utf-8'

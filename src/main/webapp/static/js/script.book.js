@@ -9,7 +9,7 @@ function updateSort() {
 
 function deleteBook(isn) {
     if (!confirm("Do you really want to delete this book?")) return;
-    $.ajax("/book/" + isn, {
+    $.ajax(url + "/book/" + isn, {
         method: "DELETE",
         dataType: "json",
         contentType: 'application/json; charset=utf-8'
@@ -19,7 +19,7 @@ function deleteBook(isn) {
 }
 
 function addBook(book) {
-    $.ajax("/book/", {
+    $.ajax(url + "/book/", {
         method: "POST",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
@@ -38,7 +38,7 @@ function addBook(book) {
 }
 
 function updateBook(book) {
-    $.ajax("/book/" + book.isn, {
+    $.ajax(url + "/book/" + book.isn, {
         method: "PUT",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
@@ -57,7 +57,7 @@ function updateBook(book) {
 }
 
 function getBooks(offset, count) {
-    $.ajax("/book/limit/" + offset + "/" + count + "/", {
+    $.ajax(url + "/book/limit/" + offset + "/" + count + "/", {
         method: "GET",
         dataType: "json",
         contentType: 'application/json; charset=utf-8'
@@ -71,7 +71,7 @@ function getBooks(offset, count) {
 }
 
 function takeBook(isn) {
-    $.ajax("/book/take/" + isn, {
+    $.ajax(url + "/book/take/" + isn, {
         method: "PUT",
         contentType: 'application/json; charset=utf-8'
     }).done(function () {
@@ -86,7 +86,7 @@ function takeBook(isn) {
 }
 
 function returnBook(isn) {
-    $.ajax("/book/return/" + isn, {
+    $.ajax(url + "/book/return/" + isn, {
         method: "PUT",
         contentType: 'application/json; charset=utf-8'
     }).done(function () {

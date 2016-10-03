@@ -3,8 +3,10 @@ var bookUpdate = {};
 var limit = 0;
 
 function updateSort() {
-    $('#table_with_books').trigger("update");
-    $('#table_with_books').trigger("sorton", [[[1, 0]]]);//$('#table_with_books').get(0).config.sortList);
+    $('#table_with_books').trigger("update").trigger("updateCache");
+    setTimeout(function () {
+        $('#table_with_books').trigger("sorton", [[[1, 0]]]);
+    }, 5);
 }
 
 function deleteBook(isn) {
@@ -166,6 +168,7 @@ function addRowToTable(book) {
 
 function updateRowInTable(book) {
     $("#tr" + book.isn).remove();
+    updateSort();
     addRowToTable(book);
 }
 

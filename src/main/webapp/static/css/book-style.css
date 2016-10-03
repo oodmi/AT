@@ -1,0 +1,50 @@
+a:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: blue;
+}
+
+a {
+    font-size: 8pt;
+    color: #000000;
+}
+
+.btn {
+    font-size: 8pt;
+}
+
+.panel {
+    margin-top: 20pt;
+}
+
+.btn-group {
+    margin-bottom: 20pt;
+    margin-top: 20pt;
+}
+
+#body {
+    background: #f8f8f8;
+    font-size: 8pt;
+}
+
+#show-more-books {
+    width: 50%;
+}
+
+#add-new-book {
+    width: 50%;
+}
+
+#head-div {
+    text-align: center;
+}
+
+#close-button {
+    margin-left: 10%;
+    width: 40%;
+}
+
+#save-button {
+    width: 40%;
+    margin-right: 10%;
+}

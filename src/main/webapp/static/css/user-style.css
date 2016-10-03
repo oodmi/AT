@@ -1,0 +1,50 @@
+a:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: blue;
+}
+
+a {
+    font-size: 8pt;
+    color: #000000;
+}
+
+tr th {
+    font-size: 8pt;
+}
+
+#body {
+    background: #f8f8f8;
+    font-size: 8pt;
+}
+
+.panel {
+    margin-top: 20pt;
+}
+
+#head-div {
+    text-align: center;
+}
+
+.btn-group {
+    margin-bottom: 20pt;
+    margin-top: 20pt;
+}
+
+.btn {
+    font-size: 8pt;
+}
+
+#add-new-user {
+    width: 40%;
+}
+
+#close-button {
+    margin-left: 10%;
+    width: 40%;
+}
+
+#save-button{
+    width: 40%;
+    margin-right: 10%;
+}

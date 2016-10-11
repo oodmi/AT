@@ -1,5 +1,7 @@
 var dialog;
 var id;
+var username = $("#username").val();
+var userPassword = $('#user-password').val();
 
 function deleteUser(user) {
     if (!confirm("Do you really want to delete this user?")) return;
@@ -97,6 +99,11 @@ function updateRowInTable(user) {
 }
 
 $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'Authorization' : btoa(username + ":" + userPassword)
+        }
+    });
     dialog = $("#dialog-form").dialog({
         autoOpen: false,
         height: 280,
@@ -135,4 +142,4 @@ $(document).ready(function () {
             addUser(user);
         }
     });
-})
+});

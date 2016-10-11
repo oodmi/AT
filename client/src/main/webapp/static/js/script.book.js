@@ -2,6 +2,8 @@ var dialog;
 var bookUpdate = {};
 var limit = 0;
 
+
+
 function updateSort() {
     $('#table_with_books').trigger("update").trigger("updateCache");
     setTimeout(function () {
@@ -62,7 +64,8 @@ function getBooks(offset, count) {
     $.ajax(url + "/book/limit/" + offset + "/" + count + "/", {
         method: "GET",
         dataType: "json",
-        contentType: 'application/json; charset=utf-8'
+        contentType: 'application/json; charset=utf-8',
+        crossDomain: true
     }).done(function (data) {
         limit = limit + data.length;
         $(data).each(function (i, book) {

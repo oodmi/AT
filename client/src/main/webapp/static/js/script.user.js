@@ -1,23 +1,23 @@
 var dialog;
 var id;
 
+$.ajaxSetup({
+    crossDomain: true
+});
+
 function getCredentials(){
     return 'Basic ' + btoa($("#username").val() + ":" + $('#user-password').val())
 }
 
-$.ajaxSetup({
-    crossDomain: true,
-    headers: {
-        // 'Access-Control-Allow-Origin' : true,
-        'Authorization' : getCredentials()
-    }
-});
 function deleteUser(user) {
     if (!confirm("Do you really want to delete this user?")) return;
     $.ajax(url + "/user/" + user.id, {
         method: "DELETE",
         dataType: "json",
-        contentType: 'application/json; charset=utf-8'
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'authorization' : getCredentials()
+        }
     }).done(function () {
         $("#tr" + user.id).remove();
     });
@@ -28,7 +28,10 @@ function addUser(user) {
         method: "POST",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(user)
+        data: JSON.stringify(user),
+        headers: {
+            'authorization' : getCredentials()
+        }
     }).done(function (valid) {
         if (valid) {
             dialog.dialog("close");
@@ -46,7 +49,10 @@ function updateUser(user) {
         method: "PUT",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(user)
+        data: JSON.stringify(user),
+        headers: {
+            'authorization' : getCredentials()
+        }
     }).done(function (valid) {
         if (valid) {
             dialog.dialog("close");
@@ -63,7 +69,10 @@ function getUsers() {
     $.ajax(url + "/user/", {
         method: "GET",
         dataType: "json",
-        contentType: 'application/json; charset=utf-8'
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'authorization' : getCredentials()
+        }
     }).done(function (data) {
         $(data).each(function (i, user) {
             addRowToTable(user)

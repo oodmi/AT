@@ -22,34 +22,44 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-        String authorization = httpRequest.getHeader("authorization");
-        byte[] decode = Base64.getDecoder().decode(authorization);
-        String credentials = "";
-        for (int i = 0; i < decode.length; i++) {
-            credentials += (char) decode[i];
+        String authorization1 = httpRequest.getHeader("authorization");
+        if (authorization1 != null) {
+            String authorization = authorization1.split(" ")[1];
+            byte[] decode = Base64.getDecoder().decode(authorization);
+            String credentials = "";
+            for (int i = 0; i < decode.length; i++) {
+                credentials += (char) decode[i];
+            }
+
+            String[] split = credentials.split(":");
+
+            HashMap<String, String> postDataParams = new HashMap<>();
+            postDataParams.put("username", split[0]);
+            postDataParams.put("password", split[1]);
+
+            URL url = new URL("http://localhost:8082/auth/");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(getPostDataString(postDataParams));
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpServletResponse.SC_OK)
+                httpResponse.setStatus(responseCode);
+            else {
+                httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        } else {
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
-        String[] split = credentials.split(":");
-
-        HashMap<String, String> postDataParams = new HashMap<>();
-        postDataParams.put("username", split[0]);
-        postDataParams.put("password", split[1]);
-
-        URL url = new URL("http://localhost:8082/auth/");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(15000);
-        conn.setConnectTimeout(15000);
-        conn.setRequestMethod("POST");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
-        writer.write(getPostDataString(postDataParams));
-        writer.flush();
-        writer.close();
-        os.close();
-        int responseCode = conn.getResponseCode();
-        httpResponse.setStatus(responseCode);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

@@ -26,8 +26,8 @@
 <div class="container">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <div style="margin-top: 20pt ; margin-left: 10%; margin-right: 10%; width: 80% ">
-            <form class="form-horizontal">
+        <div style="margin-top: 20pt ">
+            <form class="form-horizontal" style="width : 80%">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="username">Login:</label>
                     <div class="col-sm-10">
@@ -43,19 +43,10 @@
                                placeholder="Enter password" required>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div id="head-div">
-                    <a href="${pageContext.request.contextPath}/user"
-                       style="color: #3897f0; text-decoration: none">
-                        Users</a>
-                    <a href="${pageContext.request.contextPath}/book"
-                       style="color: #3897f0; text-decoration: none">
-                        Books</a>
+                <div class="form-group" >
+                    <button id="show" type="button" class="btn btn-default" style="margin-left: 3%">Show</button>
                 </div>
-            </div>
+            </form>
         </div>
         <div id="dialog-form">
             <form class="form-horizontal">

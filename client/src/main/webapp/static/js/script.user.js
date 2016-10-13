@@ -1,8 +1,17 @@
 var dialog;
 var id;
-var username = $("#username").val();
-var userPassword = $('#user-password').val();
 
+function getCredentials(){
+    return 'Basic ' + btoa($("#username").val() + ":" + $('#user-password').val())
+}
+
+$.ajaxSetup({
+    crossDomain: true,
+    headers: {
+        // 'Access-Control-Allow-Origin' : true,
+        'Authorization' : getCredentials()
+    }
+});
 function deleteUser(user) {
     if (!confirm("Do you really want to delete this user?")) return;
     $.ajax(url + "/user/" + user.id, {
@@ -99,11 +108,6 @@ function updateRowInTable(user) {
 }
 
 $(document).ready(function () {
-    $.ajaxSetup({
-        headers: {
-            'Authorization' : btoa(username + ":" + userPassword)
-        }
-    });
     dialog = $("#dialog-form").dialog({
         autoOpen: false,
         height: 280,
@@ -118,11 +122,15 @@ $(document).ready(function () {
     });
     var login = $("#login"),
         password = $("#password");
-    getUsers();
+
 
     $("#add-new-user").button().on("click", function () {
         dialog.dialog("open");
         $("#ui-id-1").text('Create new user')
+    });
+
+    $("#show").button().on("click", function () {
+        getUsers();
     });
 
     $("#close-button").button().on("click", function () {

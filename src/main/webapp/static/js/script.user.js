@@ -7,7 +7,8 @@ function deleteUser(user) {
         method: "DELETE",
         dataType: "json",
         contentType: 'application/json; charset=utf-8'
-    }).done(function () {
+    }).done(function (valid) {
+        if(valid)
         $("#tr" + user.id).remove();
     });
 }
@@ -52,7 +53,8 @@ function getUsers() {
     $.ajax(url + "/user/", {
         method: "GET",
         dataType: "json",
-        contentType: 'application/json; charset=utf-8'
+        contentType: 'application/json; charset=utf-8',
+        cache: true
     }).done(function (data) {
         $(data).each(function (i, user) {
             addRowToTable(user)

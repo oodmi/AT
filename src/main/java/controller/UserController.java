@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import persistence.User;
 import service.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -35,10 +36,11 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<User> getUsers() {
-        List<User> users = userService.getUsers();
-        return users;
+    public List<User> getUsers(final HttpServletResponse response) {
+        response.setHeader("Cache-Control", "max-age=60, public");
+        response.setHeader("Expires", "60");
+        response.setHeader("cache", "true");
+        return userService.getUsers();
     }
 }

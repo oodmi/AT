@@ -48,6 +48,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     public boolean deleteUser(Long id) {
+        String sqlPre = "Update book set ownerId = null where ownerId = ?";
+        jdbcTemplate.update(sqlPre, id);
         String sql = "delete from user where id = ?";
         int update;
         try {

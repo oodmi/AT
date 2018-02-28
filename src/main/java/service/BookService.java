@@ -23,7 +23,11 @@ public class BookService {
 
     @Transactional
     public boolean insertBook(Book book) {
-        return bookDao.insertBook(book);
+        userService.getUsers();
+        userService.getIdByLogin("Dmitry");
+        boolean b = bookDao.insertBook(book);
+        getBooks(0L, 10L);
+        return b;
     }
 
     @Transactional
@@ -38,10 +42,15 @@ public class BookService {
 
     @Transactional
     public List<BookResponse> getBooks(Long offset, Long count) {
+        userService.getUsers();
+        userService.getIdByLogin("Dmitry");
         List<Book> books = bookDao.getBooks(offset, count);
-        return books.stream().map(
+        List<BookResponse> collect = books.stream().map(
                 book -> new BookResponse(book, book.ownerId != 0 ? userService.getLoginById(book.ownerId) : null)
         ).collect(Collectors.toList());
+        userService.getUsers();
+        userService.getIdByLogin("Dmitry");
+        return collect;
     }
 
     @Transactional

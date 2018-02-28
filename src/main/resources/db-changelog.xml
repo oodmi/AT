@@ -4,18 +4,18 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="0" author="Dmitry">
+    <changeSet id="0" author="Dmitry" failOnError="false">
         <sql splitStatements="true">
-            DROP TABLE IF EXISTS BOOK CASCADE;
+            DROP TABLE IF EXISTS book CASCADE;
         </sql>
         <sql splitStatements="true">
-            DROP TABLE IF EXISTS USER CASCADE;
+            DROP TABLE IF EXISTS user CASCADE;
         </sql>
     </changeSet>
 
     <changeSet author="Dmitry" id="1">
-        <createTable tableName="USER">
-            <column name="id" type="INT(11)">
+        <createTable tableName="user">
+            <column name="id" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="VARCHAR(255)">
@@ -25,15 +25,15 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addAutoIncrement tableName="USER" columnName="id"
-                          columnDataType="INT(11)"
+        <addAutoIncrement tableName="user" columnName="id"
+                          columnDataType="int"
                           incrementBy="1"
                           startWith="1"/>
     </changeSet>
 
     <changeSet author="Dmitry" id="2">
         <createTable tableName="BOOK">
-            <column name="isn" type="INT(11)">
+            <column name="isn" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="author" type="VARCHAR(255)">
@@ -42,7 +42,7 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="ownerId" type="INT(11)">
+            <column name="ownerId" type="int">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -50,25 +50,25 @@
 
     <changeSet id="3" author="Dmitry">
         <addForeignKeyConstraint baseTableName="BOOK" baseColumnNames="ownerId" constraintName="ownerId"
-                                 referencedTableName="USER"
+                                 referencedTableName="user"
                                  referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="4" author="Dmitry">
-        <insert tableName="USER">
-            <column name="Login">Dmitry</column>
+        <insert tableName="user">
+            <column name="login">Dmitry</column>
             <column name="password">Lolka</column>
         </insert>
-        <insert tableName="USER">
-            <column name="Login">Vasy</column>
+        <insert tableName="user">
+            <column name="login">Vasy</column>
             <column name="password">Lolka</column>
         </insert>
-        <insert tableName="USER">
-            <column name="Login">Anny</column>
+        <insert tableName="user">
+            <column name="login">Anny</column>
             <column name="password">Lolka</column>
         </insert>
-        <insert tableName="USER">
-            <column name="Login">Admin</column>
+        <insert tableName="user">
+            <column name="login">Admin</column>
             <column name="password">Lolka</column>
         </insert>
     </changeSet>

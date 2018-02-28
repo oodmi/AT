@@ -19,9 +19,9 @@
             <!--</security:user-service>-->
             <security:jdbc-user-service data-source-ref="dataSource"
                                         users-by-username-query=
-                                                "SELECT login as username, password, true as enabled From user where login=?"
+                                                "SELECT login as username, password as password, true as enabled From PUBLIC.user where login=?"
                                         authorities-by-username-query=
-                                                "SELECT login as username, 'ROLE_USER' as authority From user where login=?"/>
+                                                "SELECT login as username, 'ROLE_USER' as authority From PUBLIC.user where login=?"/>
         </security:authentication-provider>
     </security:authentication-manager>
 </beans>

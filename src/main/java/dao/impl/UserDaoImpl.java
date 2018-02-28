@@ -31,12 +31,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User getUserById(Long id) {
-        String sql = "select id, login from user where id = ?";
+        String sql = "select id, login from PUBLIC.user where id = ?";
         return jdbcTemplate.queryForObject(sql, new UserMapper(), id);
     }
 
     public boolean updateUser(User user) {
-        String sql = "update user set login = ?, password = ? where id = ?";
+        String sql = "update PUBLIC.user set login = ?, password = ? where id = ?";
         int update = 0;
         try {
             update = jdbcTemplate.update(sql, user.getLogin(), user.getPassword(), user.getId());
@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     public boolean deleteUser(Long id) {
-        String sqlPre = "Update book set ownerId = null where ownerId = ?";
+        String sqlPre = "Update PUBLIC.book set ownerId = null where ownerId = ?";
         jdbcTemplate.update(sqlPre, id);
         String sql = "delete from user where id = ?";
         int update;
@@ -62,12 +62,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     public List<User> getUsers() {
-        String sql = "select id, login from user order by login";
+        String sql = "select id, login from PUBLIC.user order by login";
         return jdbcTemplate.query(sql, new UserMapper());
     }
 
     public User getIdByClass(String login) {
-        String sql = "select id, login from user where login = ?";
+        String sql = "select id, login from PUBLIC.user where login = ?";
         return jdbcTemplate.queryForObject(sql, new UserMapper(), login);
     }
 

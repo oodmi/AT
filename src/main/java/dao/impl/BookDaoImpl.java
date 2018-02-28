@@ -19,7 +19,7 @@ public class BookDaoImpl implements BookDao {
     JdbcTemplate jdbcTemplate;
 
     public boolean insertBook(Book book) {
-        String sql = "INSERT INTO book(isn,author,name) VALUES(?,?,?)";
+        String sql = "INSERT INTO PUBLIC.book(isn,author,name) VALUES(?,?,?)";
         int update;
         try {
             update = jdbcTemplate.update(sql, book.isn, book.author, book.name);
@@ -31,7 +31,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     public boolean updateBook(Book book) {
-        String sql = "UPDATE book SET name = ? , author = ? WHERE isn = ?";
+        String sql = "UPDATE PUBLIC.book SET name = ? , author = ? WHERE isn = ?";
         int update;
         try {
             update = jdbcTemplate.update(sql, book.name, book.author, book.isn);
@@ -43,24 +43,24 @@ public class BookDaoImpl implements BookDao {
     }
 
     public boolean deleteBook(Long isn) {
-        String sql = "DELETE FROM book WHERE isn = ?";
+        String sql = "DELETE FROM PUBLIC.book WHERE isn = ?";
         int update = jdbcTemplate.update(sql, isn);
         return update != 0;
     }
 
     public List<Book> getBooks(Long offset, Long count) {
-        String sql = "SELECT * FROM book ORDER BY author LIMIT ? , ?";
+        String sql = "SELECT * FROM PUBLIC.book ORDER BY author OFFSET ? LIMIT ?";
         List<Book> query = jdbcTemplate.query(sql, new BookMapper(), offset, count);
         return query;
     }
 
     public void takeBook(Long owner, Long isn) {
-        String sql = "UPDATE book SET ownerId = ? WHERE isn = ?";
+        String sql = "UPDATE PUBLIC.book SET \"ownerId\"  = ? WHERE isn = ?";
         int update = jdbcTemplate.update(sql, owner, isn);
     }
 
     public void returnBook(Long isn) {
-        String sql = "UPDATE book SET ownerId = null WHERE isn = ?";
+        String sql = "UPDATE PUBLIC.book SET \"ownerId\"  = null WHERE isn = ?";
         int update = jdbcTemplate.update(sql, isn);
     }
 
